@@ -6,7 +6,4 @@
 
 #include <iostream>
 
-void hello()
-{
-    std::cout << "hello\n";
-}
+void hello() { std::cout << "hello\n"; }
