@@ -3,4 +3,7 @@ project(path_tracer)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(path_tracer main.cpp)
+include_directories(include)
+
+add_subdirectory(src/engine)
+add_subdirectory(src/viewer)
