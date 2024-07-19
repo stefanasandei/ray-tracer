@@ -5,5 +5,6 @@ set(CMAKE_CXX_STANDARD 23)
 
 include_directories(include)
 
+add_subdirectory(external)
 add_subdirectory(src/engine)
 add_subdirectory(src/viewer)
