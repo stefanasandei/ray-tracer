@@ -5,9 +5,13 @@
 #include "gfx/context.hpp"
 
 #include <GLFW/glfw3.h>
+
+#define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 
+#ifdef __APPLE__
 #include "MetalUtility.h"
+#endif
 
 namespace Viewer {
 
@@ -56,7 +60,7 @@ void GfxContext::InitDevice() noexcept {
 
   nri::DeviceCreationDesc deviceCreationDesc = {};
   deviceCreationDesc.graphicsAPI = nri::GraphicsAPI::VULKAN;
-  deviceCreationDesc.enableAPIValidation = false;  // TODO
+  deviceCreationDesc.enableAPIValidation = false;
   deviceCreationDesc.enableNRIValidation = true;
   deviceCreationDesc.spirvBindingOffsets = SPIRV_BINDING_OFFSETS;
   deviceCreationDesc.adapterDesc = &bestAdapterDesc;
@@ -102,10 +106,12 @@ void GfxContext::InitSwapchain(const GfxContextSpecification &spec) noexcept {
   nri::Window NRIWindow = {};
 
 #if _WIN32
-  NRIWindow.windows.hwnd = glfwGetWin32Window(m_Window);
+  NRIWindow.windows.hwnd =
+      glfwGetWin32Window(static_cast<GLFWwindow *>(spec.GFLWHandle));
 #elif __linux__
   NRIWindow.x11.dpy = glfwGetX11Display();
-  NRIWindow.x11.window = glfwGetX11Window(m_Window);
+  NRIWindow.x11.window =
+      glfwGetX11Window(static_cast<GLFWwindow *>(spec.GFLWHandle));
 #elif __APPLE__
   NRIWindow.metal.caMetalLayer =
       GetMetalLayer(static_cast<GLFWwindow *>(spec.GFLWHandle));

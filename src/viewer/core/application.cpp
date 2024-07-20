@@ -9,11 +9,13 @@ namespace Viewer {
 static uint32_t FrameIndex = 0;
 
 Application::Application() {
+  constexpr int32_t width = 1600, height = 900;
+
   m_Window = std::make_shared<Window>(WindowSpecification{
-      .Width = 1080, .Height = 720, .Title = "Path Tracer Viewer"});
+      .Width = width, .Height = height, .Title = "Path Tracer Viewer"});
 
   m_GfxContext = std::make_shared<GfxContext>(GfxContextSpecification{
-      .GFLWHandle = m_Window->GetHandle(), .Width = 1080, .Height = 720});
+      .GFLWHandle = m_Window->GetHandle(), .Width = width, .Height = height});
 }
 
 Application::~Application() = default;
