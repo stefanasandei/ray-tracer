@@ -5,10 +5,12 @@ set(CMAKE_CXX_STANDARD 23)
 
 add_library(external INTERFACE)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin" CACHE STRING "")
+
 # glfw
 add_subdirectory(glfw)
 target_link_libraries(external INTERFACE glfw)
-include_directories(external INTERFACE glfw/include)
+target_include_directories(external INTERFACE glfw/include)
 
 # vulkan
 find_package(Vulkan REQUIRED)
@@ -21,3 +23,8 @@ target_link_libraries(external INTERFACE imgui)
 target_include_directories(external INTERFACE imgui)
 target_include_directories(imgui PUBLIC imgui glfw/include ${Vulkan_INCLUDE_DIRS})
 target_include_directories(external INTERFACE imgui/backends)
+
+# nri
+add_subdirectory(nri)
+target_link_libraries(external INTERFACE NRI)
+target_include_directories(external INTERFACE nri/Include)
