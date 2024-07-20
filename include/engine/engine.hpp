@@ -4,4 +4,4 @@
 
 #pragma once
 
-void hello();
+#include "engine/core/base.hpp"

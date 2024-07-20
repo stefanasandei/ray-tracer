@@ -2,9 +2,9 @@
 // Created by Asandei Stefan on 19.07.2024.
 //
 
-#include <engine/engine.hpp>
+#include "core/application.hpp"
 
-int main() {
-  hello();
-  return 0;
+int main(int argc, char* argv[]) {
+  Viewer::Application app;
+  return app.Run();
 }

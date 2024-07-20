@@ -9,3 +9,5 @@ file(GLOB_RECURSE VIEWER_SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
 add_executable(viewer ${VIEWER_HEADERS} ${VIEWER_SOURCES})
 
 target_link_libraries(viewer engine)
+
+include_directories(.)
