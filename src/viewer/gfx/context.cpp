@@ -56,7 +56,7 @@ void GfxContext::InitDevice() noexcept {
 
   nri::DeviceCreationDesc deviceCreationDesc = {};
   deviceCreationDesc.graphicsAPI = nri::GraphicsAPI::VULKAN;
-  deviceCreationDesc.enableAPIValidation = true;
+  deviceCreationDesc.enableAPIValidation = false;  // TODO
   deviceCreationDesc.enableNRIValidation = true;
   deviceCreationDesc.spirvBindingOffsets = SPIRV_BINDING_OFFSETS;
   deviceCreationDesc.adapterDesc = &bestAdapterDesc;
@@ -150,6 +150,69 @@ void GfxContext::InitBuffers() noexcept {
         NRI.CreateCommandAllocator(*m_CommandQueue, frame.CommandAllocator));
     NRI_ABORT_ON_FAILURE(
         NRI.CreateCommandBuffer(*frame.CommandAllocator, frame.CommandBuffer));
+  }
+}
+
+void GfxContext::RenderFrame(uint32_t frameIndex) noexcept {
+  const uint32_t bufferedFrameIndex = frameIndex % BUFFERED_FRAME_MAX_NUM;
+  const Frame &frame = m_Frames[bufferedFrameIndex];
+
+  if (frameIndex >= BUFFERED_FRAME_MAX_NUM) {
+    NRI.Wait(*m_FrameFence, 1 + frameIndex - BUFFERED_FRAME_MAX_NUM);
+    NRI.ResetCommandAllocator(*frame.CommandAllocator);
+  }
+
+  const uint32_t currentTextureIndex =
+      NRI.AcquireNextSwapChainTexture(*m_SwapChain);
+  BackBuffer &currentBackBuffer = m_SwapChainBuffers[currentTextureIndex];
+
+  // Record
+  nri::CommandBuffer *commandBuffer = frame.CommandBuffer;
+  NRI.BeginCommandBuffer(*commandBuffer, nullptr);
+  {
+    nri::AttachmentsDesc attachmentsDesc = {};
+    attachmentsDesc.colorNum = 1;
+    attachmentsDesc.colors = &currentBackBuffer.colorAttachment;
+
+    NRI.CmdBeginRendering(*commandBuffer, attachmentsDesc);
+    {
+      {
+        nri::ClearDesc clearDesc = {};
+        clearDesc.attachmentContentType = nri::AttachmentContentType::COLOR;
+        clearDesc.value.color32f = {0.1F, 0.8F, 0.1F, 1.0F};
+
+        NRI.CmdClearAttachments(*commandBuffer, &clearDesc, 1, nullptr, 0);
+      }
+
+      {
+        //        RenderUI(NRI, NRI, *m_Streamer, *commandBuffer, 1.0f, true);
+      }
+    }
+    NRI.CmdEndRendering(*commandBuffer);
+  }
+  NRI.EndCommandBuffer(*commandBuffer);
+
+  {  // Submit
+    nri::QueueSubmitDesc queueSubmitDesc = {};
+    queueSubmitDesc.commandBuffers = &frame.CommandBuffer;
+    queueSubmitDesc.commandBufferNum = 1;
+
+    NRI.QueueSubmit(*m_CommandQueue, queueSubmitDesc);
+  }
+
+  // Present
+  NRI.QueuePresent(*m_SwapChain);
+
+  {  // Signaling after "Present" improves D3D11 performance a bit
+    nri::FenceSubmitDesc signalFence = {};
+    signalFence.fence = m_FrameFence;
+    signalFence.value = 1 + frameIndex;
+
+    nri::QueueSubmitDesc queueSubmitDesc = {};
+    queueSubmitDesc.signalFences = &signalFence;
+    queueSubmitDesc.signalFenceNum = 1;
+
+    NRI.QueueSubmit(*m_CommandQueue, queueSubmitDesc);
   }
 }
 

@@ -33,6 +33,8 @@ class GfxContext {
   GfxContext(const GfxContextSpecification &spec);
   ~GfxContext();
 
+  void RenderFrame(uint32_t frameIndex) noexcept;
+
  private:
   void InitDebugAllocator() noexcept;
   void InitDevice() noexcept;
@@ -59,7 +61,7 @@ class GfxContext {
                                                                      300, 400};
   static constexpr uint32_t SWAP_CHAIN_TEXTURE_NUM = 2;
 
-  std::array<Frame, BUFFERED_FRAME_MAX_NUM> m_Frames;
+  std::array<Frame, BUFFERED_FRAME_MAX_NUM> m_Frames{};
   std::vector<BackBuffer> m_SwapChainBuffers;
 };
 
