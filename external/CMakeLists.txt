@@ -28,3 +28,13 @@ target_include_directories(external INTERFACE imgui/backends)
 add_subdirectory(nri)
 target_link_libraries(external INTERFACE NRI)
 target_include_directories(external INTERFACE nri/Include)
+
+# metal util
+if (APPLE)
+    find_library(COCOA_LIBRARY Cocoa REQUIRED)
+    find_library(QUARTZ_CORE QuartzCore REQUIRED)
+    add_library(MetalUtility SHARED metal_util/MetalUtility.m)
+    target_link_libraries(MetalUtility ${QUARTZ_CORE} ${COCOA_LIBRARY} glfw)
+    target_link_libraries(external INTERFACE MetalUtility)
+    target_include_directories(external INTERFACE metal_util)
+endif ()

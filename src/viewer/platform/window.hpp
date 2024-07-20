@@ -23,6 +23,8 @@ class Window {
   [[nodiscard]] bool ShouldClose() const;
   void Update() const;
 
+  [[nodiscard]] GLFWwindow *GetHandle() const { return m_Window; }
+
  private:
   GLFWwindow *m_Window;
 };

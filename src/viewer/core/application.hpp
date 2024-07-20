@@ -5,6 +5,7 @@
 #pragma once
 
 #include "core/base.hpp"
+#include "gfx/context.hpp"
 #include "platform/window.hpp"
 
 namespace Viewer {
@@ -18,6 +19,7 @@ class Application {
 
  private:
   std::shared_ptr<Window> m_Window;
+  std::shared_ptr<GfxContext> m_GfxContext;
 };
 
 }  // namespace Viewer
