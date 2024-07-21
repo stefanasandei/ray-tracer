@@ -23,3 +23,6 @@ target_link_libraries(external INTERFACE imgui)
 target_include_directories(external INTERFACE imgui)
 target_include_directories(imgui PUBLIC imgui glfw/include glad)
 target_include_directories(external INTERFACE imgui/backends)
+
+# stb
+target_include_directories(external INTERFACE stb)
