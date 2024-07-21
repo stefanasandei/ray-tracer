@@ -28,7 +28,7 @@ Image::Image(int32_t width, int32_t height, const void* data)
 Image::~Image() { glDeleteTextures(1, &m_ID); }
 
 void Image::SetData(const void* data) const {
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB,
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA,
                GL_UNSIGNED_BYTE, data);
   glGenerateMipmap(GL_TEXTURE_2D);
 }

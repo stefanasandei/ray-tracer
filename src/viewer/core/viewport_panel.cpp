@@ -6,7 +6,15 @@
 
 namespace Viewer {
 
-ViewportPanel::ViewportPanel() : m_RenderedScene(m_Width, m_Height) {}
+ViewportPanel::ViewportPanel() : m_RenderedScene(m_Width, m_Height) {
+  auto captureSpec =
+      PT::RenderCaptureSpecification{.Width = static_cast<uint32_t>(m_Width),
+                                     .Height = static_cast<uint32_t>(m_Height)};
+  m_Renderer.Capture(captureSpec);
+
+  m_ImageData = captureSpec.Buffer;
+  m_RenderedScene.SetData(captureSpec.Buffer);
+}
 
 ViewportPanel::~ViewportPanel() { delete[] m_ImageData; }
 
@@ -32,21 +40,6 @@ void ViewportPanel::Render() {
   ImGui::PopStyleVar();
 }
 
-void ViewportPanel::RenderScene() {
-  m_RenderedScene.Resize(m_Width, m_Height);
-
-  delete[] m_ImageData;
-  m_ImageData = new uint8_t[m_Width * m_Height * 3];
-
-  for (int i = 0; i < m_Width * m_Height * 3; i += 3) {
-    int y = (i / 3) / m_Width;
-    int x = (i / 3) % m_Width;
-    m_ImageData[i + 0] = (float)x / (m_Width) * 255;
-    m_ImageData[i + 1] = (float)y / (m_Height) * 255;
-    m_ImageData[i + 2] = 0 * 255;
-  }
-
-  m_RenderedScene.SetData(m_ImageData);
-}
+void ViewportPanel::RenderScene() {}
 
 }  // namespace Viewer
