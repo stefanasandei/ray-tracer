@@ -4,6 +4,3 @@
 [submodule "external/imgui"]
 	path = external/imgui
 	url = https://github.com/ocornut/imgui.git
-[submodule "external/nri"]
-	path = external/nri
-	url = https://github.com/NVIDIAGameWorks/NRI.git

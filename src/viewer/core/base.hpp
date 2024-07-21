@@ -4,6 +4,4 @@
 
 #pragma once
 
-#include <NRI.h>
-
 #include <engine/engine.hpp>

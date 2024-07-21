@@ -9,9 +9,6 @@ namespace Viewer {
 Window::Window(const WindowSpecification &spec) {
   if (!glfwInit()) std::exit(0);
 
-  glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-  glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-
   m_Window = glfwCreateWindow(static_cast<int>(spec.Width),
                               static_cast<int>(spec.Height), spec.Title.c_str(),
                               nullptr, nullptr);
