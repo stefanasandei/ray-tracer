@@ -26,3 +26,8 @@ target_include_directories(external INTERFACE imgui/backends)
 
 # stb
 target_include_directories(external INTERFACE stb)
+
+# glm
+add_subdirectory(glm)
+target_link_libraries(external INTERFACE glm)
+target_include_directories(external INTERFACE glm)

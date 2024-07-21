@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include "engine/core/base.hpp"
 
 namespace PT {
@@ -29,5 +31,9 @@ class Renderer {
   void SaveCapture(const RenderCaptureSpecification& spec,
                    const std::string& filename) const;
 };
+
+// ------ Utility function ------
+
+static uint32_t ConvertToRGBA(const glm::vec4& color);
 
 }  // namespace PT

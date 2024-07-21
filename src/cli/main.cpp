@@ -7,8 +7,8 @@
 int main() {
   PT::Renderer renderer;
 
-  auto captureSpec = PT::RenderCaptureSpecification{
-      .Width = 1080, .Height = 720, .Buffer = nullptr};
+  auto captureSpec =
+      PT::RenderCaptureSpecification{.Width = 1080, .Height = 720};
 
   renderer.Capture(captureSpec);
   renderer.SaveCapture(captureSpec, "sample.png");
