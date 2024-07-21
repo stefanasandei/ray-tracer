@@ -11,7 +11,7 @@ int main() {
       PT::RenderCaptureSpecification{.Width = 1080, .Height = 720};
 
   renderer.Capture(captureSpec);
-  renderer.SaveCapture(captureSpec, "sample.png");
 
+  PT::Renderer::SaveCapture(captureSpec, "sample.png");
   return 0;
 }
