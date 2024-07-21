@@ -2,7 +2,10 @@
 // Created by Stefan on 7/20/2024.
 //
 
-#include "application.hpp"
+#include "core/application.hpp"
+
+#include "core/settings_panel.hpp"
+#include "core/viewport_panel.hpp"
 
 namespace Viewer {
 
@@ -15,6 +18,9 @@ Application::Application() {
   m_GfxContext = std::make_shared<GfxContext>();
 
   m_UILayer = std::make_shared<UILayer>(m_Window->GetHandle());
+
+  m_Panels.push_back(std::make_shared<SettingsPanel>());
+  m_Panels.push_back(std::make_shared<ViewportPanel>());
 }
 
 Application::~Application() = default;
@@ -26,14 +32,18 @@ int32_t Application::Run() noexcept {
 
     m_UILayer->BeginUI();
     {
-      ImGui::Begin("test");
-      ImGui::Text("hello world");
-      ImGui::End();
+      ShowUI();
     }
     m_UILayer->EndUI();
   }
 
   return 0;
+}
+
+void Application::ShowUI() noexcept {
+  for (auto& panel : m_Panels) {
+    panel->Render();
+  }
 }
 
 }  // namespace Viewer

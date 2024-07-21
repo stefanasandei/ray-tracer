@@ -79,14 +79,6 @@ void UILayer::BeginUI() noexcept {
 
       ImGui::EndMenu();
     }
-    if (ImGui::BeginMenu("Render settings")) {
-      if (ImGui::MenuItem("FOV")) {
-      }
-      if (ImGui::MenuItem("Path Trace")) {
-      }
-
-      ImGui::EndMenu();
-    }
     ImGui::EndMainMenuBar();
   }
 
