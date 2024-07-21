@@ -5,14 +5,18 @@
 #include "gfx/context.hpp"
 
 #include <GLFW/glfw3.h>
-#include <imgui.h>
 
 namespace Viewer {
 
-GfxContext::GfxContext(const GfxContextSpecification &spec) {}
+GfxContext::GfxContext(const GfxContextSpecification &spec) {
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) std::exit(1);
+}
 
-GfxContext::~GfxContext() {}
+GfxContext::~GfxContext() = default;
 
-void GfxContext::RenderFrame(uint32_t frameIndex) noexcept {}
+void GfxContext::RenderFrame() noexcept {
+  glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+}
 
 }  // namespace Viewer

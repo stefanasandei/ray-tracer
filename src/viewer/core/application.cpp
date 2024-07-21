@@ -23,7 +23,7 @@ Application::~Application() = default;
 int32_t Application::Run() noexcept {
   while (!m_Window->ShouldClose()) {
     m_Window->Update();
-    m_GfxContext->RenderFrame(FrameIndex++);
+    m_GfxContext->RenderFrame();
   }
 
   return 0;

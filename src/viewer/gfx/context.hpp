@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <glad/glad.h>
+
 #include "core/base.hpp"
 #include "gfx/ui_layer.hpp"
 
@@ -20,10 +22,10 @@ struct GfxContextSpecification {
 
 class GfxContext {
  public:
-  GfxContext(const GfxContextSpecification &spec);
+  explicit GfxContext(const GfxContextSpecification &spec);
   ~GfxContext();
 
-  void RenderFrame(uint32_t frameIndex) noexcept;
+  void RenderFrame() noexcept;
 
  private:
  private:
