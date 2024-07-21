@@ -13,23 +13,17 @@ namespace Viewer {
 
 // ---- Helper Structs ----
 
-struct GfxContextSpecification {
-  void *GFLWHandle;
-  int32_t Width, Height;
-};
-
 // ---- The Graphics Context ----
 
 class GfxContext {
  public:
-  explicit GfxContext(const GfxContextSpecification &spec);
+  explicit GfxContext();
   ~GfxContext();
 
   void RenderFrame() noexcept;
 
  private:
- private:
-  std::shared_ptr<UILayer> m_UILayer;
+  uint32_t m_FrameIndex = 0;
 };
 
 }  // namespace Viewer

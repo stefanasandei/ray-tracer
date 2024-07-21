@@ -4,21 +4,21 @@
 
 #pragma once
 
+#include <GLFW/glfw3.h>
 #include <imgui.h>
 
 namespace Viewer {
 
 class UILayer {
  public:
-  UILayer() {}
-  ~UILayer() {}
+  explicit UILayer(GLFWwindow* glfwHandle);
+  ~UILayer();
 
-  void RenderUI() noexcept {}
-
-  void BeginUI() noexcept {}
-  void EndUI() noexcept {}
+  void BeginUI() noexcept;
+  void EndUI() noexcept;
 
  private:
+  bool m_Open = true;
 };
 
 }  // namespace Viewer

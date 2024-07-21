@@ -4,7 +4,7 @@
 
 #include "core/application.hpp"
 
-int main(int argc, char* argv[]) {
+int main() {
   Viewer::Application app;
   return app.Run();
 }

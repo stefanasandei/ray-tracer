@@ -20,6 +20,7 @@ class Application {
  private:
   std::shared_ptr<Window> m_Window;
   std::shared_ptr<GfxContext> m_GfxContext;
+  std::shared_ptr<UILayer> m_UILayer;
 };
 
 }  // namespace Viewer
