@@ -13,10 +13,17 @@ int main() {
                      .Width = 1080,
                      .Height = 720});
 
+  PT::Primitive smolSphere(
+      std::make_shared<PT::Sphere>(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f),
+      std::make_shared<PT::Lambertian>(glm::vec3(1.0f, 0.0f, 1.0f)));
+
+  PT::Primitive groundSphere(
+      std::make_shared<PT::Sphere>(glm::vec3(0.0f, -100.5f, -1.0f), 100.0f),
+      std::make_shared<PT::Lambertian>(glm::vec3(1.0f, 1.0f, 1.0f)));
+
   PT::Scene scene;
-  scene.Add(std::make_shared<PT::Sphere>(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f));
-  scene.Add(
-      std::make_shared<PT::Sphere>(glm::vec3(0.0f, -100.5f, -1.0f), 100.0f));
+  scene.Add(smolSphere);
+  scene.Add(groundSphere);
 
   renderer.SetActiveCamera(camera);
   renderer.SetGeometry(scene);

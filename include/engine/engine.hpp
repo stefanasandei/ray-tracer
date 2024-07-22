@@ -5,5 +5,6 @@
 #pragma once
 
 #include "engine/core/base.hpp"
+#include "engine/materials.hpp"
 #include "engine/renderer.hpp"
 #include "engine/shapes.hpp"

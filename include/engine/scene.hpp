@@ -5,6 +5,7 @@
 #pragma once
 
 #include "engine/base/shape.hpp"
+#include "engine/primitive.hpp"
 
 namespace PT {
 
@@ -13,13 +14,13 @@ class Scene : public Shape {
   Scene();
 
   void Clear() noexcept;
-  void Add(const std::shared_ptr<Shape>& shape) noexcept;
+  void Add(const Primitive& shape) noexcept;
 
   bool Hit(const Ray& r, float rayTMin, float rayTMax,
            HitRecord& rec) const override;
 
  private:
-  std::vector<std::shared_ptr<Shape>> m_Shapes;
+  std::vector<Primitive> m_Geometry;
 };
 
 }  // namespace PT

@@ -8,10 +8,10 @@ namespace PT {
 
 Scene::Scene() = default;
 
-void Scene::Clear() noexcept { m_Shapes.clear(); }
+void Scene::Clear() noexcept { m_Geometry.clear(); }
 
-void Scene::Add(const std::shared_ptr<Shape>& shape) noexcept {
-  m_Shapes.emplace_back(shape);
+void Scene::Add(const Primitive& shape) noexcept {
+  m_Geometry.emplace_back(shape);
 }
 
 bool Scene::Hit(const Ray& r, float rayTMin, float rayTMax,
@@ -20,8 +20,8 @@ bool Scene::Hit(const Ray& r, float rayTMin, float rayTMax,
   bool hitAnything = false;
   auto closestSoFar = rayTMax;
 
-  for (const auto& shape : m_Shapes) {
-    if (shape->Hit(r, rayTMin, closestSoFar, tempRec)) {
+  for (const auto& shape : m_Geometry) {
+    if (shape.Hit(r, rayTMin, closestSoFar, tempRec)) {
       hitAnything = true;
       closestSoFar = tempRec.T;
       rec = tempRec;

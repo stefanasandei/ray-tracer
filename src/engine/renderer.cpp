@@ -72,11 +72,17 @@ glm::vec3 Renderer::TraceRay(const PT::Ray& ray,
   HitRecord rec{};
   if (m_ScenePrimitive.Hit(ray, 0.001, std::numeric_limits<float>::infinity(),
                            rec)) {
-    glm::vec3 direction = rec.Normal + Random::InUnitSphere();
-    return 0.5f * TraceRay(Ray(rec.Point, direction), depth - 1);
+    Ray scattered(glm::vec3(0.0f), glm::vec3(0.0f));
+    glm::vec3 attenuation(0.0f);
+    if (rec.Mat->Scatter(ray, rec, attenuation, scattered))
+      return attenuation * TraceRay(scattered, depth - 1);
+    return glm::vec3(0.0f);
   }
 
-  return glm::vec3(1.0f);
+  auto a =
+      glm::vec3(0.5) * (glm::normalize(ray.GetDirection()) + glm::vec3(1.0));
+  return (glm::vec3(1.0) - a) * glm::vec3(1.0, 1.0, 1.0) +
+         a * glm::vec3(0.5, 0.7, 1.0);
 }
 
 static uint32_t ConvertToRGBA(const glm::vec4& color) {

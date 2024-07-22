@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "engine/base/material.hpp"
 #include "engine/core/base.hpp"
 #include "engine/ray.hpp"
 
@@ -14,6 +15,7 @@ struct HitRecord {
   glm::vec3 Normal;
   float T;
   bool IsFrontFace;
+  std::shared_ptr<Material> Mat;
 
   void SetFaceNormal(const Ray& r, const glm::vec3& outwardNormal) {
     IsFrontFace = glm::dot(r.GetDirection(), outwardNormal) < 0;
