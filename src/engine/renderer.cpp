@@ -19,9 +19,7 @@ Renderer::Renderer()
 
 Renderer::~Renderer() = default;
 
-void Renderer::AddGeometry(const Primitive& primitive) {
-  m_ScenePrimitive = primitive;  // todo
-}
+void Renderer::SetGeometry(const Scene& scene) { m_ScenePrimitive = scene; }
 
 void Renderer::SetActiveCamera(const Camera& camera) { m_Camera = camera; }
 
@@ -43,6 +41,8 @@ void Renderer::SaveCapture(const RenderCaptureSpecification& spec,
                            const std::string& filename) {
   constexpr int numChannels = 4;
 
+  stbi_flip_vertically_on_write(1);
+
   stbi_write_png(filename.c_str(), static_cast<int>(spec.Width),
                  static_cast<int>(spec.Height), numChannels, spec.Buffer,
                  static_cast<int>(spec.Width * sizeof(uint32_t)));
@@ -51,6 +51,12 @@ void Renderer::SaveCapture(const RenderCaptureSpecification& spec,
 glm::vec3 Renderer::PerPixel(uint32_t x, uint32_t y) const noexcept {
   Ray ray(m_Camera.GetPosition(),
           m_Camera.GetRayDirections()[x + y * m_Camera.GetWidth()]);
+
+  HitRecord rec{};
+  if (m_ScenePrimitive.Hit(ray, 0, std::numeric_limits<float>::infinity(),
+                           rec)) {
+    return 0.5f * (rec.Normal + 1.0f);
+  }
 
   auto a =
       glm::vec3(0.5) * (glm::normalize(ray.GetDirection()) + glm::vec3(1.0));

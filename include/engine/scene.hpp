@@ -1,24 +1,25 @@
 //
-// Created by Asandei Stefan on 21.07.2024.
+// Created by Stefan on 7/22/2024.
 //
 
 #pragma once
 
 #include "engine/base/shape.hpp"
-#include "engine/core/base.hpp"
 
 namespace PT {
 
-class Sphere : public Shape {
+class Scene : public Shape {
  public:
-  Sphere(const glm::vec3& origin, float radius);
+  Scene();
+
+  void Clear() noexcept;
+  void Add(const std::shared_ptr<Shape>& shape) noexcept;
 
   bool Hit(const Ray& r, float rayTMin, float rayTMax,
            HitRecord& rec) const override;
 
  private:
-  glm::vec3 m_Origin;
-  float m_Radius;
+  std::vector<std::shared_ptr<Shape>> m_Shapes;
 };
 
 }  // namespace PT

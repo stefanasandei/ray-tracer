@@ -8,7 +8,7 @@
 
 #include "engine/camera.hpp"
 #include "engine/core/base.hpp"
-#include "engine/primitive.hpp"
+#include "engine/scene.hpp"
 
 namespace PT {
 
@@ -26,7 +26,7 @@ class Renderer {
   Renderer();
   ~Renderer();
 
-  void AddGeometry(const Primitive& primitive);
+  void SetGeometry(const Scene& scene);
   void SetActiveCamera(const Camera& camera);
 
   void Capture(RenderCaptureSpecification& spec);
@@ -38,7 +38,7 @@ class Renderer {
 
  private:
   Camera m_Camera;
-  Primitive m_ScenePrimitive;
+  Scene m_ScenePrimitive;
 };
 
 // ------ Utility function ------
