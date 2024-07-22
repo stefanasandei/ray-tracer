@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "engine/core/random.hpp"
 #include "engine/core/std.hpp"
 
 #ifdef _DEBUG

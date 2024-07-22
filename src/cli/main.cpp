@@ -14,14 +14,14 @@ int main() {
                      .Height = 720});
 
   PT::Scene scene;
-  scene.Add(std::make_shared<PT::Sphere>(glm::vec3(0.0f, 0.0f, 3.0f), 0.5f));
+  scene.Add(std::make_shared<PT::Sphere>(glm::vec3(0.0f, 0.0f, 1.0f), 0.5f));
   scene.Add(
       std::make_shared<PT::Sphere>(glm::vec3(0.0f, -100.5f, -1.0f), 100.0f));
 
   renderer.SetActiveCamera(camera);
   renderer.SetGeometry(scene);
 
-  constexpr auto factor = 5;
+  constexpr auto factor = 1;
   auto captureSpec = PT::RenderCaptureSpecification{.Width = 1080 / factor,
                                                     .Height = 720 / factor};
 

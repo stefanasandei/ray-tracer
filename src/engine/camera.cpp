@@ -15,7 +15,7 @@ Camera::Camera(const CameraSpecification& spec)
       m_ViewportWidth(spec.Width),
       m_ViewportHeight(spec.Height) {
   m_ForwardDirection = glm::vec3(0, 0, -1);
-  m_Position = glm::vec3(0, 0, 6);
+  m_Position = glm::vec3(0, 0, 3);
 
   RecalculateProjection();
   RecalculateView();
@@ -56,9 +56,9 @@ void Camera::RecalculateRayDirections() {
       coord = coord * 2.0f - 1.0f;
 
       glm::vec4 target = inverseProjection * glm::vec4(coord.x, coord.y, 1, 1);
-      glm::vec3 rayDirection = glm::vec3(
-          inverseView * glm::vec4(glm::normalize(glm::vec3(target) / target.w),
-                                  0));  // World space
+      glm::vec3 rayDirection =
+          glm::vec3(inverseView *
+                    glm::vec4(glm::normalize(glm::vec3(target) / target.w), 0));
       m_RayDirections[x + y * m_ViewportWidth] = rayDirection;
     }
   }

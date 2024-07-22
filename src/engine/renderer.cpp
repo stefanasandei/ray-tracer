@@ -49,19 +49,34 @@ void Renderer::SaveCapture(const RenderCaptureSpecification& spec,
 }
 
 glm::vec3 Renderer::PerPixel(uint32_t x, uint32_t y) const noexcept {
-  Ray ray(m_Camera.GetPosition(),
-          m_Camera.GetRayDirections()[x + y * m_Camera.GetWidth()]);
+  constexpr auto samplesPerPixel = 20;
 
-  HitRecord rec{};
-  if (m_ScenePrimitive.Hit(ray, 0, std::numeric_limits<float>::infinity(),
-                           rec)) {
-    return 0.5f * (rec.Normal + 1.0f);
+  glm::vec3 color(0.0f);
+
+  for (auto sample = 0; sample < samplesPerPixel; sample++) {
+    auto origin = m_Camera.GetPosition();
+    auto direction = m_Camera.GetRayDirections()[x + y * m_Camera.GetWidth()] +
+                     Random::Vec3(-0.001f, 0.001f);
+
+    Ray ray(origin, direction);
+    color += TraceRay(ray);
   }
 
-  auto a =
-      glm::vec3(0.5) * (glm::normalize(ray.GetDirection()) + glm::vec3(1.0));
-  return (glm::vec3(1.0) - a) * glm::vec3(1.0, 1.0, 1.0) +
-         a * glm::vec3(0.5, 0.7, 1.0);
+  return color / static_cast<float>(samplesPerPixel);
+}
+
+glm::vec3 Renderer::TraceRay(const PT::Ray& ray,
+                             uint32_t depth) const noexcept {
+  if (depth <= 0) return glm::vec3(0.0f);
+
+  HitRecord rec{};
+  if (m_ScenePrimitive.Hit(ray, 0.001, std::numeric_limits<float>::infinity(),
+                           rec)) {
+    glm::vec3 direction = rec.Normal + Random::InUnitSphere();
+    return 0.5f * TraceRay(Ray(rec.Point, direction), depth - 1);
+  }
+
+  return glm::vec3(1.0f);
 }
 
 static uint32_t ConvertToRGBA(const glm::vec4& color) {
