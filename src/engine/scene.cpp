@@ -23,7 +23,7 @@ bool Scene::Hit(const Ray& r, float rayTMin, float rayTMax,
   for (const auto& shape : m_Shapes) {
     if (shape->Hit(r, rayTMin, closestSoFar, tempRec)) {
       hitAnything = true;
-      closestSoFar - tempRec.T;
+      closestSoFar = tempRec.T;
       rec = tempRec;
     }
   }
