@@ -6,6 +6,9 @@
 
 #include <stb_image_write.h>
 
+#include <algorithm>
+#include <execution>
+
 #include "engine/ray.hpp"
 
 namespace PT {
@@ -14,8 +17,8 @@ Renderer::Renderer()
     : m_Camera({.VerticalFOV = 45.0f,
                 .NearClip = 0.1f,
                 .FarClip = 100.0f,
-                .Width = 1600,
-                .Height = 900}) {}
+                .Width = 0,
+                .Height = 0}) {}
 
 Renderer::~Renderer() = default;
 
@@ -28,13 +31,22 @@ void Renderer::Capture(RenderCaptureSpecification& spec) {
 
   spec.Buffer = new uint32_t[spec.Width * spec.Height];
 
-  for (uint32_t y = 0; y < spec.Height; y++) {
-    for (uint32_t x = 0; x < spec.Width; x++) {
-      glm::vec3 color = PerPixel(x, y);
+  std::vector<int> heightIter(spec.Width);
+  for (int i = 0; i < spec.Height; i++) heightIter[i] = i;
 
-      spec.Buffer[x + y * spec.Width] = ConvertToRGBA(glm::vec4(color, 1.0f));
-    }
-  }
+  std::vector<int> widthIter(spec.Width);
+  for (int i = 0; i < spec.Width; i++) widthIter[i] = i;
+
+  std::for_each(std::execution::par, heightIter.begin(), heightIter.end(),
+                [this, &widthIter, &spec](uint32_t y) {
+                  std::for_each(std::execution::seq, widthIter.begin(),
+                                widthIter.end(), [this, &y, &spec](uint32_t x) {
+                                  glm::vec3 color = PerPixel(x, y);
+
+                                  spec.Buffer[x + y * spec.Width] =
+                                      ConvertToRGBA(glm::vec4(color, 1.0f));
+                                });
+                });
 }
 
 void Renderer::SaveCapture(const RenderCaptureSpecification& spec,

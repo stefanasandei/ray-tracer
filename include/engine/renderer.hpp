@@ -36,7 +36,7 @@ class Renderer {
  private:
   [[nodiscard]] glm::vec3 PerPixel(uint32_t x, uint32_t y) const noexcept;
   [[nodiscard]] glm::vec3 TraceRay(const Ray& ray,
-                                   uint32_t depth = 50) const noexcept;
+                                   uint32_t depth = 10) const noexcept;
 
  private:
   Camera m_Camera;

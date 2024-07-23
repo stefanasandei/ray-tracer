@@ -6,6 +6,7 @@
 
 #include "engine/core/random.hpp"
 #include "engine/core/std.hpp"
+#include "engine/core/timer.hpp"
 
 #ifdef _DEBUG
 

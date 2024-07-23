@@ -4,7 +4,10 @@
 
 #include "engine/camera.hpp"
 
+#include <algorithm>
+#include <execution>
 #include <glm/gtc/matrix_transform.hpp>
+#include <ranges>
 
 namespace PT {
 
@@ -17,9 +20,11 @@ Camera::Camera(const CameraSpecification& spec)
   m_ForwardDirection = glm::vec3(0, 0, -1);
   m_Position = glm::vec3(0, 0, 3);
 
-  RecalculateProjection();
-  RecalculateView();
-  RecalculateRayDirections();
+  if (m_ViewportWidth > 0 && m_ViewportHeight > 0) {
+    RecalculateProjection();
+    RecalculateView();
+    RecalculateRayDirections();
+  }
 }
 
 Camera::~Camera() = default;
@@ -49,19 +54,30 @@ void Camera::RecalculateRayDirections() {
   auto inverseProjection = glm::inverse(m_Projection);
   auto inverseView = glm::inverse(m_View);
 
-  for (uint32_t y = 0; y < m_ViewportHeight; y++) {
-    for (uint32_t x = 0; x < m_ViewportWidth; x++) {
-      glm::vec2 coord = {(float)x / (float)m_ViewportWidth,
-                         (float)y / (float)m_ViewportHeight};
-      coord = coord * 2.0f - 1.0f;
+  std::vector<int> heightIter(m_ViewportHeight);
+  for (int i = 0; i < m_ViewportHeight; i++) heightIter[i] = i;
 
-      glm::vec4 target = inverseProjection * glm::vec4(coord.x, coord.y, 1, 1);
-      glm::vec3 rayDirection =
-          glm::vec3(inverseView *
-                    glm::vec4(glm::normalize(glm::vec3(target) / target.w), 0));
-      m_RayDirections[x + y * m_ViewportWidth] = rayDirection;
-    }
-  }
+  std::vector<int> widthIter(m_ViewportWidth);
+  for (int i = 0; i < m_ViewportWidth; i++) widthIter[i] = i;
+
+  std::for_each(
+      std::execution::par, heightIter.begin(), heightIter.end(),
+      [this, &widthIter, &inverseProjection, &inverseView](uint32_t y) {
+        std::for_each(
+            std::execution::par, widthIter.begin(), widthIter.end(),
+            [this, &inverseProjection, &inverseView, &y](uint32_t x) {
+              glm::vec2 coord = {(float)x / (float)m_ViewportWidth,
+                                 (float)y / (float)m_ViewportHeight};
+              coord = coord * 2.0f - 1.0f;
+
+              glm::vec4 target =
+                  inverseProjection * glm::vec4(coord.x, coord.y, 1, 1);
+              glm::vec3 rayDirection = glm::vec3(
+                  inverseView *
+                  glm::vec4(glm::normalize(glm::vec3(target) / target.w), 0));
+              m_RayDirections[x + y * m_ViewportWidth] = rayDirection;
+            });
+      });
 }
 
 }  // namespace PT
