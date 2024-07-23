@@ -26,7 +26,7 @@ int main() {
 
   PT::Primitive smolSphere2(
       std::make_shared<PT::Sphere>(glm::vec3(-0.75f, 0.0f, 1.0f), 0.5f),
-      std::make_shared<PT::Lambertian>(glm::vec3(0.8f, 0.9f, 0.0f)));
+      std::make_shared<PT::Metal>(glm::vec3(0.8f, 0.9f, 0.0f), 0.0f));
 
   PT::Primitive groundSphere(
       std::make_shared<PT::Sphere>(glm::vec3(0.0f, -100.5f, -1.0f), 100.0f),

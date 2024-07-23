@@ -18,4 +18,16 @@ bool Lambertian::Scatter(const Ray& ray, const HitRecord& rec,
   return true;
 }
 
+Metal::Metal(const glm::vec3& albedo, float fuzz)
+    : m_Albedo(albedo), m_Fuzz(fuzz) {}
+
+bool Metal::Scatter(const Ray& ray, const HitRecord& rec,
+                    glm::vec3& attenuation, Ray& scattered) const {
+  auto reflected = glm::reflect(ray.GetDirection(), rec.Normal);
+  reflected = glm::normalize(reflected) + (m_Fuzz * Random::InUnitSphere());
+  scattered = Ray(rec.Point, reflected);
+  attenuation = m_Albedo;
+  return (glm::dot(scattered.GetDirection(), rec.Normal) > 0);
+}
+
 }  // namespace PT
