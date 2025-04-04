@@ -40,7 +40,7 @@ int main() {
   renderer.SetActiveCamera(camera);
   renderer.SetGeometry(scene);
 
-  constexpr auto factor = 1;
+  constexpr auto factor = 5;
   auto captureSpec = PT::RenderCaptureSpecification{.Width = 1280 / factor,
                                                     .Height = 720 / factor};
 
