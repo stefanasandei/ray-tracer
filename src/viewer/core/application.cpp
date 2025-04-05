@@ -10,7 +10,7 @@
 namespace Viewer {
 
 Application::Application() {
-  constexpr int32_t width = 1600, height = 900;
+  constexpr int32_t width = 1280, height = 720;
 
   m_Window = std::make_shared<Window>(WindowSpecification{
       .Width = width, .Height = height, .Title = "Path Tracer Viewer"});

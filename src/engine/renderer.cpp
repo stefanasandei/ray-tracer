@@ -26,10 +26,17 @@ void Renderer::SetGeometry(const Scene& scene) { m_ScenePrimitive = scene; }
 
 void Renderer::SetActiveCamera(const Camera& camera) { m_Camera = camera; }
 
+// for debug
+int cnt = 1;
 void Renderer::Capture(RenderCaptureSpecification& spec) {
+  std::fill(spec.Buffer, spec.Buffer+spec.Width*spec.Height, (++cnt % 2 == 0 ? 0xFF0000FF : 0xFF00FFFF));
+  return;
+
   m_Camera.Resize(spec.Width, spec.Height);
 
-  spec.Buffer = new uint32_t[spec.Width * spec.Height];
+  if(spec.Buffer == nullptr) {
+    spec.Buffer = new uint32_t[spec.Width * spec.Height];
+  }
 
   std::vector<int> heightIter(spec.Width);
   for (int i = 0; i < spec.Height; i++) heightIter[i] = i;

@@ -12,7 +12,11 @@ SettingsPanel::~SettingsPanel() = default;
 
 void SettingsPanel::Render() {
   ImGui::Begin("Settings");
-  ImGui::Text("hello world");
+
+  if(ImGui::Button("Render")) {
+    GlobalEventFlags::Set(EventFlag::RenderNow);
+  }
+
   ImGui::End();
 }
 

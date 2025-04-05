@@ -13,7 +13,7 @@ class Image {
   Image(int32_t width, int32_t height, const void* data = nullptr);
   ~Image();
 
-  void SetData(const void* data) const;
+  void SetData(const uint32_t* data) const;
 
   void Resize(int32_t width, int32_t height);
 

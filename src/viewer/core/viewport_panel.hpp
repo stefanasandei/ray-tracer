@@ -16,11 +16,14 @@ class ViewportPanel : public Panel {
 
  private:
   void RenderScene();
+  void ResizeScene();
 
  private:
   PT::Renderer m_Renderer;
 
-  int32_t m_Width = 1080, m_Height = 720;
+  int32_t m_Width = 0, m_Height = 0;
+  int32_t m_PrevWidth, m_PrevHeight;
+
   uint32_t* m_ImageData = nullptr;
   Image m_RenderedScene;
 };
