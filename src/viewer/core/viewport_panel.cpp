@@ -40,9 +40,9 @@ void ViewportPanel::Render() {
 
   ImGui::PopStyleVar();
 
-  if(GlobalEventFlags::Get(EventFlag::RenderNow)) {
+  if(GlobalEventFlags.RenderNow) {
     RenderScene();
-    GlobalEventFlags::Clear(EventFlag::RenderNow);
+    GlobalEventFlags.RenderNow = false;
   }
 }
 

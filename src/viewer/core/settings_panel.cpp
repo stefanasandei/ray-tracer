@@ -14,7 +14,7 @@ void SettingsPanel::Render() {
   ImGui::Begin("Settings");
 
   if(ImGui::Button("Render")) {
-    GlobalEventFlags::Set(EventFlag::RenderNow);
+    GlobalEventFlags.RenderNow = true;
   }
 
   ImGui::End();
