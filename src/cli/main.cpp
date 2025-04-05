@@ -16,6 +16,7 @@ int main() {
   PT::Camera camera({.VerticalFOV = 45.0f,
                      .NearClip = 0.1f,
                      .FarClip = 100.0f,
+                     .SamplesPerPixel = 20,
                      .Width = 1080,
                      .Height = 720});
   timer.End("Camera creation");

@@ -17,8 +17,10 @@ Renderer::Renderer()
     : m_Camera({.VerticalFOV = 45.0f,
                 .NearClip = 0.1f,
                 .FarClip = 100.0f,
+                .SamplesPerPixel = 5,
                 .Width = 0,
-                .Height = 0}) {}
+                .Height = 0
+      }) {}
 
 Renderer::~Renderer() = default;
 
@@ -26,19 +28,14 @@ void Renderer::SetGeometry(const Scene& scene) { m_ScenePrimitive = scene; }
 
 void Renderer::SetActiveCamera(const Camera& camera) { m_Camera = camera; }
 
-// for debug
-int cnt = 1;
 void Renderer::Capture(RenderCaptureSpecification& spec) {
-  std::fill(spec.Buffer, spec.Buffer+spec.Width*spec.Height, (++cnt % 2 == 0 ? 0xFF0000FF : 0xFF00FFFF));
-  return;
-
   m_Camera.Resize(spec.Width, spec.Height);
 
   if(spec.Buffer == nullptr) {
     spec.Buffer = new uint32_t[spec.Width * spec.Height];
   }
 
-  std::vector<int> heightIter(spec.Width);
+  std::vector<int> heightIter(spec.Height);
   for (int i = 0; i < spec.Height; i++) heightIter[i] = i;
 
   std::vector<int> widthIter(spec.Width);
@@ -68,11 +65,9 @@ void Renderer::SaveCapture(const RenderCaptureSpecification& spec,
 }
 
 glm::vec3 Renderer::PerPixel(uint32_t x, uint32_t y) const noexcept {
-  constexpr auto samplesPerPixel = 20;
-
   glm::vec3 color(0.0f);
 
-  for (auto sample = 0; sample < samplesPerPixel; sample++) {
+  for (auto sample = 0; sample < m_Camera.GetSamplesPerPixel(); sample++) {
     auto origin = m_Camera.GetPosition();
     auto direction = m_Camera.GetRayDirections()[x + y * m_Camera.GetWidth()] +
                      Random::Vec3(-0.001f, 0.001f);
@@ -81,7 +76,7 @@ glm::vec3 Renderer::PerPixel(uint32_t x, uint32_t y) const noexcept {
     color += TraceRay(ray);
   }
 
-  return color / static_cast<float>(samplesPerPixel);
+  return color / static_cast<float>(m_Camera.GetSamplesPerPixel());
 }
 
 glm::vec3 Renderer::TraceRay(const PT::Ray& ray,

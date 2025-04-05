@@ -16,7 +16,8 @@ Camera::Camera(const CameraSpecification& spec)
       m_NearClip(spec.NearClip),
       m_FarClip(spec.FarClip),
       m_ViewportWidth(spec.Width),
-      m_ViewportHeight(spec.Height) {
+      m_ViewportHeight(spec.Height),
+      m_SamplesPerPixel(spec.SamplesPerPixel) {
   m_ForwardDirection = glm::vec3(0, 0, -1);
   m_Position = glm::vec3(0, 0, 3);
 
@@ -30,6 +31,10 @@ Camera::Camera(const CameraSpecification& spec)
 Camera::~Camera() = default;
 
 void Camera::Resize(uint32_t width, uint32_t height) {
+  if(m_ViewportWidth == width && m_ViewportHeight == height) {
+    return;
+  }
+
   m_ViewportWidth = width;
   m_ViewportHeight = height;
 

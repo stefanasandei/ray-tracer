@@ -20,9 +20,14 @@ void ViewportPanel::Render() {
 
   ImGui::Begin("Viewport");
 
+  uint32_t windowWidth = static_cast<int32_t>(ImGui::GetIO().DisplaySize.x);
+
   m_Width = static_cast<int32_t>(ImGui::GetContentRegionAvail().x);
   m_Height = static_cast<int32_t>(ImGui::GetContentRegionAvail().y);
-  if(m_Width != m_PrevWidth || m_Height != m_PrevHeight) {
+
+  // the width check is to avoid rendering on the first frame, before imgui sets up
+  // the panel layout
+  if((m_Width != m_PrevWidth || m_Height != m_PrevHeight) && m_Width != windowWidth) {
     ResizeScene();
   }
 

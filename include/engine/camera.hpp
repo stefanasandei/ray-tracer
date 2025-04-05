@@ -14,6 +14,7 @@ struct CameraSpecification {
   float VerticalFOV;
   float NearClip;
   float FarClip;
+  uint32_t SamplesPerPixel;
   uint32_t Width, Height;
 };
 
@@ -21,6 +22,8 @@ class Camera {
  public:
   explicit Camera(const CameraSpecification& spec);
   ~Camera();
+
+  [[nodiscard]] const uint32_t& GetSamplesPerPixel() const { return m_SamplesPerPixel; }
 
   [[nodiscard]] const glm::mat4& GetProjection() const { return m_Projection; }
   [[nodiscard]] const glm::mat4& GetView() const { return m_View; }
@@ -48,6 +51,8 @@ class Camera {
   float m_VerticalFOV = 45.0f;
   float m_NearClip = 0.1f;
   float m_FarClip = 100.0f;
+
+  uint32_t m_SamplesPerPixel = 20;
 
   glm::vec3 m_Position{0.0f, 0.0f, 0.0f};
   glm::vec3 m_ForwardDirection{0.0f, 0.0f, 0.0f};
