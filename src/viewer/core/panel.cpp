@@ -8,5 +8,6 @@ namespace Viewer {
 
 // used for panels to send messages to each other
 EventFlags GlobalEventFlags;
+PanelState GlobalPanelState;
 
 }  // namespace Viewer

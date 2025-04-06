@@ -4,8 +4,9 @@
 
 #include "core/application.hpp"
 
-#include "core/settings_panel.hpp"
-#include "core/viewport_panel.hpp"
+#include "panels/settings_panel.hpp"
+#include "panels/viewport_panel.hpp"
+#include "panels/scene_panel.hpp"
 
 namespace Viewer {
 
@@ -21,6 +22,7 @@ Application::Application() {
 
   m_Panels.push_back(std::make_shared<SettingsPanel>());
   m_Panels.push_back(std::make_shared<ViewportPanel>());
+  m_Panels.push_back(std::make_shared<ScenePanel>());
 }
 
 Application::~Application() = default;

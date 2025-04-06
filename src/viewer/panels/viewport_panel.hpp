@@ -17,6 +17,7 @@ class ViewportPanel : public Panel {
  private:
   void RenderScene();
   void ResizeScene();
+  void HandlePanelEvents();
 
  private:
   PT::Renderer m_Renderer;

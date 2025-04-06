@@ -2,7 +2,7 @@
 // Created by Stefan on 7/21/2024.
 //
 
-#include "core/viewport_panel.hpp"
+#include "panels/viewport_panel.hpp"
 
 namespace Viewer {
 
@@ -34,15 +34,25 @@ void ViewportPanel::Render() {
   ImGui::Image(
       (void *)(intptr_t)m_RenderedScene.GetID(),
       ImVec2(static_cast<float>(m_Width), static_cast<float>(m_Height)),
-      ImVec2(1, 0), ImVec2(0, 1));
+      ImVec2(0, 1), ImVec2(1, 0));
 
   ImGui::End();
 
   ImGui::PopStyleVar();
 
+  // handle events from other panels
+  HandlePanelEvents();
+}
+
+void ViewportPanel::HandlePanelEvents() {
   if(GlobalEventFlags.RenderNow) {
     RenderScene();
     GlobalEventFlags.RenderNow = false;
+  }
+
+  if(GlobalEventFlags.SceneUpdated) {
+    m_Renderer.SetGeometry(GlobalPanelState.Scene);
+    GlobalEventFlags.SceneUpdated = false;
   }
 }
 

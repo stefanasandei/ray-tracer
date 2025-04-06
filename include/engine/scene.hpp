@@ -19,6 +19,8 @@ class Scene : public Shape {
   bool Hit(const Ray& r, float rayTMin, float rayTMax,
            HitRecord& rec) const override;
 
+  [[nodiscard]] const std::vector<Primitive>& GetPrimitives() const { return m_Geometry; }
+
  private:
   std::vector<Primitive> m_Geometry;
 };

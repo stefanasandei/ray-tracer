@@ -29,6 +29,8 @@ class Renderer {
   void SetGeometry(const Scene& scene);
   void SetActiveCamera(const Camera& camera);
 
+  [[nodiscard]] const Scene& GetSceneGeometry() const { return m_ScenePrimitive; }
+
   void Capture(RenderCaptureSpecification& spec);
   static void SaveCapture(const RenderCaptureSpecification& spec,
                           const std::string& filename);

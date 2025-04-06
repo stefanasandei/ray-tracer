@@ -2,7 +2,7 @@
 // Created by Stefan on 7/21/2024.
 //
 
-#include "core/settings_panel.hpp"
+#include "panels/settings_panel.hpp"
 
 namespace Viewer {
 
