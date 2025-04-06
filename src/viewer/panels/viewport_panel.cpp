@@ -6,14 +6,13 @@
 
 namespace Viewer {
 
-// used for debug
-static const int32_t DOWNSAMPLE_FACTOR = 10;
-
 ViewportPanel::ViewportPanel() : m_RenderedScene(m_Width, m_Height) {
   m_ImageData = new uint32_t[m_Width * m_Height];
 
   m_PrevWidth = m_Width;
   m_PrevHeight = m_Height;
+
+  GlobalPanelState.SamplesPerPixel = m_Renderer.GetCamera().GetSamplesPerPixel();
 }
 
 ViewportPanel::~ViewportPanel() { delete[] m_ImageData; }
@@ -62,8 +61,8 @@ void ViewportPanel::HandlePanelEvents() {
 void ViewportPanel::RenderScene() {
   auto captureSpec =
       PT::RenderCaptureSpecification {
-          .Width = static_cast<uint32_t>(m_Width / DOWNSAMPLE_FACTOR),
-          .Height = static_cast<uint32_t>(m_Height / DOWNSAMPLE_FACTOR),
+          .Width = static_cast<uint32_t>(m_Width / GlobalPanelState.DownsampleFactor),
+          .Height = static_cast<uint32_t>(m_Height / GlobalPanelState.DownsampleFactor),
           .Buffer = m_ImageData
       };
 
@@ -71,6 +70,7 @@ void ViewportPanel::RenderScene() {
   m_Renderer.Capture(captureSpec);
 
   // updates the opengl texture data
+  m_RenderedScene.Resize(m_Width / GlobalPanelState.DownsampleFactor, m_Height / GlobalPanelState.DownsampleFactor);
   m_RenderedScene.SetData(m_ImageData);
 }
 
@@ -87,7 +87,7 @@ void ViewportPanel::ResizeScene() {
   }
 
   // update the image buffer
-  m_RenderedScene.Resize(m_Width / DOWNSAMPLE_FACTOR, m_Height / DOWNSAMPLE_FACTOR);
+  m_RenderedScene.Resize(m_Width / GlobalPanelState.DownsampleFactor, m_Height / GlobalPanelState.DownsampleFactor);
   m_RenderedScene.SetData(m_ImageData);
 
   m_PrevWidth = m_Width;

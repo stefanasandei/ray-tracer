@@ -17,6 +17,9 @@ struct EventFlags {
 };
 
 struct PanelState {
+  int32_t DownsampleFactor = 10;
+  uint32_t* SamplesPerPixel = nullptr;
+
   uint32_t ActivePrimitiveIdx = 1;
   PT::Scene Scene;
 };

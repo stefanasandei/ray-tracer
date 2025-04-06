@@ -13,10 +13,42 @@ SettingsPanel::~SettingsPanel() = default;
 void SettingsPanel::Render() {
   ImGui::Begin("Settings");
 
-  ImGui::SeparatorText("Scene Settings");
+  {
+    ImGui::SeparatorText("Scene Settings");
 
-  if(ImGui::Button("Render")) {
-    GlobalEventFlags.RenderNow = true;
+    if(ImGui::Button("Render")) {
+      GlobalEventFlags.RenderNow = true;
+    }
+
+    ImGui::Text("");
+    ImGui::Text("Camera:");
+
+    ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders;
+    if(ImGui::BeginTable("Layout", 2, flags)) {
+      ImGui::TableNextRow();
+      ImGui::TableNextColumn();
+
+      ImGui::AlignTextToFramePadding();
+      ImGui::TextUnformatted("Pixel Samples");
+      ImGui::SameLine();
+
+      ImGui::TableNextColumn();
+      ImGui::SetNextItemWidth(-FLT_MIN); // full column width
+      ImGui::InputInt("##samples", reinterpret_cast<int*>(GlobalPanelState.SamplesPerPixel));
+
+      ImGui::TableNextRow();
+      ImGui::TableNextColumn();
+
+      ImGui::AlignTextToFramePadding();
+      ImGui::TextUnformatted("Downsample Factor");
+      ImGui::SameLine();
+
+      ImGui::TableNextColumn();
+      ImGui::SetNextItemWidth(-FLT_MIN); // full column width
+      ImGui::InputInt("##downsample_factor", &GlobalPanelState.DownsampleFactor);
+
+      ImGui::EndTable();
+    }
   }
 
   ImGui::Text("");
