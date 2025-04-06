@@ -21,8 +21,11 @@ void SettingsPanel::Render() {
 
   ImGui::Text("");
   if(GlobalPanelState.ActivePrimitiveIdx != -1) {
+    auto selectedPrimitive = GlobalPanelState.Scene.GetPrimitives()[GlobalPanelState.ActivePrimitiveIdx-1];
+
     ImGui::SeparatorText("Entity Settings");
 
+    ImGui::Text("name: %s", selectedPrimitive.GetTag().c_str());
     ImGui::Text("selected id: %d", GlobalPanelState.ActivePrimitiveIdx);
   }
 

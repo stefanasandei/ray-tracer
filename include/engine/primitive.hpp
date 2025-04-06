@@ -18,15 +18,19 @@ class Primitive {
 
   void SetShape(const std::shared_ptr<Shape>& shape);
   void SetMaterial(const std::shared_ptr<Material>& material);
+  void SetTag(const std::string& tag);
 
   [[nodiscard]] std::shared_ptr<Shape> GetShape() const;
   [[nodiscard]] std::shared_ptr<Material> GetMaterial() const;
+  [[nodiscard]] std::string GetTag() const;
 
   bool Hit(const Ray& r, float rayTMin, float rayTMax, HitRecord& rec) const;
 
  private:
   std::shared_ptr<Shape> m_Shape;
   std::shared_ptr<Material> m_Material;
+
+  std::string m_Tag;
 };
 
 }  // namespace PT

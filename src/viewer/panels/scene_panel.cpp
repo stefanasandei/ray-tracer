@@ -32,7 +32,7 @@ void ScenePanel::RenderSceneHierarchy() {
     ++index;
 
     ImGuiTreeNodeFlags flags = ((GlobalPanelState.ActivePrimitiveIdx == index) ? ImGuiTreeNodeFlags_Selected : 0);
-    bool opened = ImGui::TreeNodeEx((void*)(uint64_t)index, flags, "Primitive id: %d", index);
+    bool opened = ImGui::TreeNodeEx((void*)(uint64_t)index, flags, "%s", primitive.GetTag().c_str());
     if(ImGui::IsItemClicked()) {
       GlobalPanelState.ActivePrimitiveIdx = index;
     }
@@ -69,6 +69,7 @@ void ScenePanel::RenderNewPrimitiveForm() {
 
   if(ImGui::Button("Create")) {
     PT::Primitive newPrimitive(nullptr, std::make_shared<PT::Lambertian>(glm::vec3(1.0f, 1.0f, 1.0f)));
+    newPrimitive.SetTag("New Entity");
 
     if(strcmp(currentItem, "Sphere") == 0) {
       newPrimitive.SetShape(std::make_shared<PT::Sphere>(glm::vec3(0.0f, 0.0f, 1.0f), 0.25f));
@@ -89,14 +90,17 @@ void ScenePanel::LoadDefaultScene() {
   PT::Primitive smolSphere(
       std::make_shared<PT::Sphere>(glm::vec3(0.75f, 0.0f, 1.0f), 0.5f),
       std::make_shared<PT::Lambertian>(glm::vec3(0.8f, 0.0f, 0.9f)));
+  smolSphere.SetTag("Smol Sphere");
 
   PT::Primitive smolSphere2(
       std::make_shared<PT::Sphere>(glm::vec3(-0.75f, 0.0f, 1.0f), 0.5f),
       std::make_shared<PT::Metal>(glm::vec3(0.8f, 0.9f, 0.0f), 0.0f));
+  smolSphere2.SetTag("Smol Sphere 2");
 
   PT::Primitive groundSphere(
       std::make_shared<PT::Sphere>(glm::vec3(0.0f, -100.5f, -1.0f), 100.0f),
       std::make_shared<PT::Lambertian>(glm::vec3(0.9f, 0.9f, 0.9f)));
+  groundSphere.SetTag("Ground Sphere");
 
   GlobalPanelState.Scene.Add(smolSphere);
   GlobalPanelState.Scene.Add(smolSphere2);

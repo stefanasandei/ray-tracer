@@ -17,7 +17,7 @@ Renderer::Renderer()
     : m_Camera({.VerticalFOV = 45.0f,
                 .NearClip = 0.1f,
                 .FarClip = 100.0f,
-                .SamplesPerPixel = 5,
+                .SamplesPerPixel = 1,
                 .Width = 0,
                 .Height = 0
       }) {}
