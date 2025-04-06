@@ -27,6 +27,9 @@ void ScenePanel::Render() {
 
 void ScenePanel::RenderSceneHierarchy() {
   ImGui::Text("List of current primitives:");
+
+  ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 6.0f));
+
   uint32_t index = 0;
   for(const auto& primitive: GlobalPanelState.Scene.GetPrimitives()) {
     ++index;
@@ -41,6 +44,8 @@ void ScenePanel::RenderSceneHierarchy() {
       ImGui::TreePop();
     }
   }
+
+  ImGui::PopStyleVar();
 }
 
 void ScenePanel::RenderNewPrimitiveForm() {

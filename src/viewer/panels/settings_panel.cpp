@@ -25,8 +25,35 @@ void SettingsPanel::Render() {
 
     ImGui::SeparatorText("Entity Settings");
 
-    ImGui::Text("name: %s", selectedPrimitive.GetTag().c_str());
-    ImGui::Text("selected id: %d", GlobalPanelState.ActivePrimitiveIdx);
+    ImGui::Text("Name: %s", selectedPrimitive.GetTag().c_str());
+    ImGui::Text("Selected ID: %d", GlobalPanelState.ActivePrimitiveIdx);
+    ImGui::Text("");
+
+    // 1. color picker
+    auto material = selectedPrimitive.GetMaterial();
+    if (auto lambert = std::dynamic_pointer_cast<PT::Lambertian>(material)) {
+      ImVec4 albedo {lambert->GetAlbedo().x, lambert->GetAlbedo().y, lambert->GetAlbedo().z, 1.0f};
+
+      ImGui::DragFloat3("Albedo", &albedo.x, 0.01f, 0.0f, 1.0f);
+      ImGui::SameLine();
+      ImGui::ColorButton("Albedo", albedo);
+
+      // update the entity
+      lambert->SetAlbedo(glm::vec3(albedo.x, albedo.y, albedo.z));
+    } else if (auto metal = std::dynamic_pointer_cast<PT::Metal>(material)) {
+      ImVec4 albedo {metal->GetAlbedo().x, metal->GetAlbedo().y, metal->GetAlbedo().z, 1.0f};
+      float fuzz = metal->GetFuzz();
+
+      ImGui::DragFloat3("Albedo", &albedo.x, 0.01f, 0.0f, 1.0f);
+      ImGui::SameLine();
+      ImGui::ColorButton("Albedo", albedo);
+
+      ImGui::SliderFloat("Fuzz", &fuzz, 0.0f, 1.0f);
+
+      // update the entity
+      metal->SetAlbedo(glm::vec3(albedo.x, albedo.y, albedo.z));
+      metal->SetFuzz(fuzz);
+    }
   }
 
   ImGui::End();

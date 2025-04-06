@@ -6,6 +6,9 @@
 
 namespace Viewer {
 
+// used for debug
+static const int32_t DOWNSAMPLE_FACTOR = 10;
+
 ViewportPanel::ViewportPanel() : m_RenderedScene(m_Width, m_Height) {
   m_ImageData = new uint32_t[m_Width * m_Height];
 
@@ -59,8 +62,8 @@ void ViewportPanel::HandlePanelEvents() {
 void ViewportPanel::RenderScene() {
   auto captureSpec =
       PT::RenderCaptureSpecification {
-          .Width = static_cast<uint32_t>(m_Width),
-          .Height = static_cast<uint32_t>(m_Height),
+          .Width = static_cast<uint32_t>(m_Width / DOWNSAMPLE_FACTOR),
+          .Height = static_cast<uint32_t>(m_Height / DOWNSAMPLE_FACTOR),
           .Buffer = m_ImageData
       };
 
@@ -84,7 +87,7 @@ void ViewportPanel::ResizeScene() {
   }
 
   // update the image buffer
-  m_RenderedScene.Resize(m_Width, m_Height);
+  m_RenderedScene.Resize(m_Width / DOWNSAMPLE_FACTOR, m_Height / DOWNSAMPLE_FACTOR);
   m_RenderedScene.SetData(m_ImageData);
 
   m_PrevWidth = m_Width;

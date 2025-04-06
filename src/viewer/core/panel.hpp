@@ -17,7 +17,7 @@ struct EventFlags {
 };
 
 struct PanelState {
-  uint32_t ActivePrimitiveIdx = -1;
+  uint32_t ActivePrimitiveIdx = 1;
   PT::Scene Scene;
 };
 
