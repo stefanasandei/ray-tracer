@@ -26,8 +26,6 @@ void ScenePanel::Render() {
 }
 
 void ScenePanel::RenderSceneHierarchy() {
-  // todo: be able to select one
-
   ImGui::Text("List of current primitives:");
   uint32_t index = 0;
   for(const auto& primitive: GlobalPanelState.Scene.GetPrimitives()) {

@@ -16,8 +16,8 @@ class ScenePanel : public Panel {
  private:
   static void LoadDefaultScene();
 
-  void RenderNewPrimitiveForm();
-  void RenderSceneHierarchy();
+  static void RenderNewPrimitiveForm();
+  static void RenderSceneHierarchy();
 };
 
 }  // namespace Viewer
