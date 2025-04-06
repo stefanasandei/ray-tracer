@@ -2,7 +2,7 @@
 
 A (work in progress) ray tracer written from scratch in modern C++.
 
-![sample render](./res/images/metals.png)
+![sample render](./res/images/editor.png)
 
 There are three CMake targets: engine (the ray tracing library), viewer (an imgui app to display renders) and cli (a cli tool in the future, a quick debugging tool for now). This work is based on the Ray Tracing in One Weekend book.
 
