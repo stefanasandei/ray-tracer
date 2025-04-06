@@ -43,7 +43,14 @@ void SettingsPanel::Render() {
     auto& primitive = GlobalPanelState.Scene.GetPrimitives()[activeIdx - 1];
 
     ImGui::SeparatorText("Entity Settings");
-    ImGui::Text("Name: %s", primitive.GetTag().c_str());
+
+    static char name[256];
+    memset(name, 0, sizeof(name));
+    strcpy_s(name, sizeof(name), primitive.GetTag().c_str());
+    if(ImGui::InputText("Name", name, sizeof(name))) {
+      primitive.SetTag(std::string(name));
+    }
+
     ImGui::Text("Selected ID: %d", activeIdx);
     ImGui::Text("");
 
