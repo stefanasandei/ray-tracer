@@ -16,6 +16,12 @@ class Sphere : public Shape {
   bool Hit(const Ray& r, float rayTMin, float rayTMax,
            HitRecord& rec) const override;
 
+  void SetOrigin(const glm::vec3& origin) { m_Origin = origin; }
+  [[nodiscard]] const glm::vec3& GetOrigin() const { return m_Origin; }
+
+  void SetRadius(const float& radius) { m_Radius = radius; }
+  [[nodiscard]] const float& GetRadius() const { return m_Radius; }
+
  private:
   glm::vec3 m_Origin;
   float m_Radius;

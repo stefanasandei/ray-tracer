@@ -15,7 +15,7 @@ Image::Image(int32_t width, int32_t height, const void* data)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
   if (data != nullptr) {
     glTextureSubImage2D(
@@ -41,7 +41,7 @@ void Image::Resize(int32_t width, int32_t height) {
   glTextureParameteri(m_ID, GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTextureParameteri(m_ID, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTextureParameteri(m_ID, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-  glTextureParameteri(m_ID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTextureParameteri(m_ID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 }
 
 }  // namespace Viewer

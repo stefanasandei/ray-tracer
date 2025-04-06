@@ -12,6 +12,12 @@ class SettingsPanel : public Panel {
   ~SettingsPanel();
 
   void Render() override;
+
+ private:
+  static void RenderCameraSettings();
+
+  static void RenderEntityMaterialSettings(PT::Primitive& primitive);
+  static void RenderEntityTransformSettings(PT::Primitive& primitive);
 };
 
 }  // namespace Viewer

@@ -17,7 +17,7 @@ struct EventFlags {
 };
 
 struct PanelState {
-  int32_t DownsampleFactor = 10;
+  int32_t DownsampleFactor = 5;
   uint32_t* SamplesPerPixel = nullptr;
 
   uint32_t ActivePrimitiveIdx = 1;

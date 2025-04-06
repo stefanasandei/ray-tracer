@@ -20,6 +20,7 @@ class Scene : public Shape {
            HitRecord& rec) const override;
 
   [[nodiscard]] const std::vector<Primitive>& GetPrimitives() const { return m_Geometry; }
+  [[nodiscard]] std::vector<Primitive>& GetPrimitives() { return m_Geometry; }
 
  private:
   std::vector<Primitive> m_Geometry;
