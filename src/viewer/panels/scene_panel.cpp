@@ -46,30 +46,45 @@ void ScenePanel::RenderSceneHierarchy() {
 }
 
 void ScenePanel::RenderNewPrimitiveForm() {
-  // todo: functionality
-
   ImGui::Text("Add a new primitive:");
 
   const char* items[] = { "Sphere" };
-  static const char* current_item = NULL;
+  static const char* currentItem = nullptr;
 
-  if (ImGui::BeginCombo("##combo", current_item)) // The second parameter is the label previewed before opening the combo.
-  {
-    for (int n = 0; n < IM_ARRAYSIZE(items); n++)
-    {
-      bool is_selected = (current_item == items[n]); // You can store your selection however you want, outside or inside your objects
-      if (ImGui::Selectable(items[n], is_selected))
-        current_item = items[n];
-      if (is_selected)
-        ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+  if (ImGui::BeginCombo("##combo", currentItem)) {
+    for (auto & item : items) {
+      bool isSelected = (currentItem == item);
+
+      if (ImGui::Selectable(item, isSelected))
+        currentItem = item;
+
+      if (isSelected)
+        ImGui::SetItemDefaultFocus();
     }
     ImGui::EndCombo();
   }
+
   ImGui::SameLine();
+
+  if(currentItem == nullptr)
+    ImGui::BeginDisabled();
+
   if(ImGui::Button("Create")) {
+    PT::Primitive newPrimitive(nullptr, std::make_shared<PT::Lambertian>(glm::vec3(1.0f, 1.0f, 1.0f)));
+
+    if(strcmp(currentItem, "Sphere") == 0) {
+      newPrimitive.SetShape(std::make_shared<PT::Sphere>(glm::vec3(0.0f, 0.0f, 1.0f), 0.25f));
+    }
+
+    GlobalPanelState.Scene.Add(newPrimitive);
     GlobalEventFlags.SceneUpdated = true;
   }
-  ImGui::Text(" "); // leave some space between lines
+
+  if(currentItem == nullptr)
+    ImGui::EndDisabled();
+
+  // leave some space between lines
+  ImGui::Text(" ");
 }
 
 void ScenePanel::LoadDefaultScene() {
