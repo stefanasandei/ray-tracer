@@ -18,6 +18,9 @@ class SettingsPanel : public Panel {
 
   static void RenderEntityMaterialSettings(PT::Primitive& primitive);
   static void RenderEntityTransformSettings(PT::Primitive& primitive);
+
+ private:
+  PT::Timer m_Timer;
 };
 
 }  // namespace Viewer

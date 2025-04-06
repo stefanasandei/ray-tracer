@@ -14,7 +14,9 @@ void Timer::Start() {
   m_StartTimepoint = std::chrono::high_resolution_clock::now();
 }
 
-void Timer::End(std::string_view opName) {
+double Timer::End(std::string_view opName, bool output) {
+  if(m_StartTimepoint == TimePoint {}) return m_LastResult;
+
   auto endTimepoint = std::chrono::high_resolution_clock::now();
 
   auto start =
@@ -29,7 +31,15 @@ void Timer::End(std::string_view opName) {
   auto duration = end - start;
   double ms = static_cast<double>(duration) * 0.001;
 
-  std::cout << opName << " took " << ms << " ms\n";
+  m_LastResult = ms;
+
+  if(output)
+    std::cout << opName << " took " << ms << " ms\n";
+
+  // reset
+  m_StartTimepoint = TimePoint{};
+
+  return ms;
 }
 
 }  // namespace PT

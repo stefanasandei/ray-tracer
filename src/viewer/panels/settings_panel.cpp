@@ -32,6 +32,10 @@ void SettingsPanel::Render() {
 
   if (ImGui::Button("Render")) {
     GlobalEventFlags.RenderNow = true;
+    m_Timer.Start();
+  } else {
+    ImGui::SameLine();
+    ImGui::Text("Time to render: %.2f ms", m_Timer.End("", false));
   }
 
   CategorySeparator();

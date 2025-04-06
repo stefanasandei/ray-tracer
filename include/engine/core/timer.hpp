@@ -14,10 +14,13 @@ class Timer {
   ~Timer();
 
   void Start();
-  void End(std::string_view opName = "X");
+  double End(std::string_view opName = "X", bool output = true);
 
  private:
   std::chrono::time_point<std::chrono::high_resolution_clock> m_StartTimepoint;
+  double m_LastResult = 0.0;
 };
+
+using TimePoint = const std::chrono::time_point<std::chrono::steady_clock>;
 
 }  // namespace PT
