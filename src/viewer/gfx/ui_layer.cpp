@@ -4,11 +4,15 @@
 
 #include "gfx/ui_layer.hpp"
 
+#include <ImGuiFileDialog.h>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
 #include <cstdlib>
+#include <filesystem>
+
+#include "core/panel.hpp"
 
 namespace Viewer {
 
@@ -71,8 +75,20 @@ void UILayer::BeginUI() noexcept {
     ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), dockspaceFlags);
   }
 
+  RenderMenuBar();
+
+  ImGui::End();
+}
+
+void UILayer::RenderMenuBar() const {
+  bool openExportImagePopup = false;
+
   if (ImGui::BeginMainMenuBar()) {
     if (ImGui::BeginMenu("File")) {
+      if (ImGui::MenuItem("Export as image")) {
+        openExportImagePopup = true;
+      }
+
       if (ImGui::MenuItem("Close")) {
         std::exit(0);
       }
@@ -82,7 +98,57 @@ void UILayer::BeginUI() noexcept {
     ImGui::EndMainMenuBar();
   }
 
-  ImGui::End();
+  if(openExportImagePopup)
+    ImGui::OpenPopup("Export as image");
+
+  RenderExportPopup();
+}
+
+void UILayer::RenderExportPopup() {
+  static char directoryBuf[256] = "./";
+  static char filenameBuf[256] = "output.png";
+
+  if (ImGui::BeginPopupModal("Export as image", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+
+    // Open file dialog to choose directory
+    if (ImGui::Button("Choose Output Directory")) {
+      IGFD::FileDialogConfig config;
+      config.path = ".";
+      ImGuiFileDialog::Instance()->OpenDialog("ChooseDirDlgKey", "Choose Directory", nullptr, config);
+    }
+
+    // Handle directory dialog result
+    if (ImGuiFileDialog::Instance()->Display("ChooseDirDlgKey")) {
+      if (ImGuiFileDialog::Instance()->IsOk()) {
+        std::string selectedDir = ImGuiFileDialog::Instance()->GetCurrentPath();
+
+        strcpy_s(directoryBuf, sizeof(directoryBuf), selectedDir.c_str());
+        directoryBuf[sizeof(directoryBuf) - 1] = '\0';
+      }
+      ImGuiFileDialog::Instance()->Close();
+    }
+
+    // Manual input fields
+    ImGui::InputText("Directory", directoryBuf, sizeof(directoryBuf));
+    ImGui::InputText("Filename", filenameBuf, sizeof(filenameBuf));
+
+    ImGui::Spacing();
+
+    // Cancel / Export buttons
+    if (ImGui::Button("Cancel")) {
+      ImGui::CloseCurrentPopup();
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Button("Export")) {
+      GlobalEventFlags.ExportToImage = true;
+      GlobalPanelState.ExportFilepath = std::string(directoryBuf) + "/" + std::string(filenameBuf);
+      ImGui::CloseCurrentPopup();
+    }
+
+    ImGui::EndPopup();
+  }
 }
 
 void UILayer::EndUI() noexcept {

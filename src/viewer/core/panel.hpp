@@ -14,6 +14,7 @@ namespace Viewer {
 struct EventFlags {
   bool RenderNow = false;
   bool SceneUpdated = false;
+  bool ExportToImage = false;
 };
 
 struct PanelState {
@@ -22,6 +23,7 @@ struct PanelState {
 
   uint32_t ActivePrimitiveIdx = 1;
   PT::Scene Scene;
+  std::string ExportFilepath;
 };
 
 extern EventFlags GlobalEventFlags;

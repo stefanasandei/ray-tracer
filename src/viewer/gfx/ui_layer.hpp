@@ -18,6 +18,10 @@ class UILayer {
   void EndUI() noexcept;
 
  private:
+  void RenderMenuBar() const;
+  static void RenderExportPopup() ;
+
+ private:
   bool m_Open = true;
 };
 

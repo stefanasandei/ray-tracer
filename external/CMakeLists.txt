@@ -31,3 +31,10 @@ target_include_directories(external INTERFACE stb)
 add_subdirectory(glm)
 target_link_libraries(external INTERFACE glm)
 target_include_directories(external INTERFACE glm)
+
+# ImGuiFileDialog
+add_subdirectory(imguifiledialog)
+target_link_libraries(ImGuiFileDialog PUBLIC imgui)
+target_include_directories(ImGuiFileDialog PUBLIC imgui)
+target_link_libraries(external INTERFACE ImGuiFileDialog)
+target_include_directories(external INTERFACE imguifiledialog)

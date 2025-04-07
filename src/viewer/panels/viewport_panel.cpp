@@ -56,6 +56,23 @@ void ViewportPanel::HandlePanelEvents() {
     m_Renderer.SetGeometry(GlobalPanelState.Scene);
     GlobalEventFlags.SceneUpdated = false;
   }
+
+  if(GlobalEventFlags.ExportToImage) {
+    auto captureSpec =
+        PT::RenderCaptureSpecification {
+            .Width = static_cast<uint32_t>(m_Width / GlobalPanelState.DownsampleFactor),
+            .Height = static_cast<uint32_t>(m_Height / GlobalPanelState.DownsampleFactor),
+            .Buffer = m_ImageData
+        };
+
+    PT::Renderer::SaveCapture(captureSpec, GlobalPanelState.ExportFilepath);
+
+    // todo: might want to show a toast after https://github.com/TyomaVader/ImGuiNotify
+    // too fancy for now tho
+
+    GlobalEventFlags.ExportToImage = false;
+    GlobalPanelState.ExportFilepath = "";
+  }
 }
 
 void ViewportPanel::RenderScene() {
