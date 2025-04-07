@@ -24,7 +24,9 @@ class Camera {
   ~Camera();
 
   [[nodiscard]] uint32_t* GetSamplesPerPixel() { return &m_SamplesPerPixel; }
-  [[nodiscard]] const uint32_t& GetSamplesPerPixel() const { return m_SamplesPerPixel; }
+  [[nodiscard]] const uint32_t& GetSamplesPerPixel() const {
+    return m_SamplesPerPixel;
+  }
 
   [[nodiscard]] const glm::mat4& GetProjection() const { return m_Projection; }
   [[nodiscard]] const glm::mat4& GetView() const { return m_View; }

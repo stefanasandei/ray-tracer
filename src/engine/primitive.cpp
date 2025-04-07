@@ -20,9 +20,7 @@ void Primitive::SetMaterial(const std::shared_ptr<Material>& material) {
   m_Material = material;
 }
 
-void Primitive::SetTag(const std::string& tag) {
-  m_Tag = tag;
-}
+void Primitive::SetTag(const std::string& tag) { m_Tag = tag; }
 
 std::shared_ptr<Shape> Primitive::GetShape() const { return m_Shape; }
 

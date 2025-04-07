@@ -19,17 +19,22 @@ struct RenderCaptureSpecification {
   uint32_t* Buffer;
 };
 
+enum RendererAPI { CPU, VULKAN };
+
 // ------ Main Renderer class ------
 
 class Renderer {
  public:
   Renderer();
+  Renderer(const RendererAPI& api);
   ~Renderer();
 
   void SetGeometry(const Scene& scene);
   void SetActiveCamera(const Camera& camera);
 
-  [[nodiscard]] const Scene& GetSceneGeometry() const { return m_ScenePrimitive; }
+  [[nodiscard]] const Scene& GetSceneGeometry() const {
+    return m_ScenePrimitive;
+  }
   [[nodiscard]] Camera& GetCamera() { return m_Camera; }
 
   void Capture(RenderCaptureSpecification& spec);
@@ -42,6 +47,7 @@ class Renderer {
                                    uint32_t depth = 10) const noexcept;
 
  private:
+  RendererAPI m_API;
   Camera m_Camera;
   Scene m_ScenePrimitive;
 };

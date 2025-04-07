@@ -19,8 +19,19 @@ Renderer::Renderer()
                 .FarClip = 100.0f,
                 .SamplesPerPixel = 1,
                 .Width = 0,
-                .Height = 0
-      }) {}
+                .Height = 0}) {
+  m_API = RendererAPI::CPU;
+}
+
+Renderer::Renderer(const RendererAPI& api)
+    : m_Camera({.VerticalFOV = 45.0f,
+                .NearClip = 0.1f,
+                .FarClip = 100.0f,
+                .SamplesPerPixel = 1,
+                .Width = 0,
+                .Height = 0}) {
+  m_API = api;
+}
 
 Renderer::~Renderer() = default;
 
@@ -31,7 +42,7 @@ void Renderer::SetActiveCamera(const Camera& camera) { m_Camera = camera; }
 void Renderer::Capture(RenderCaptureSpecification& spec) {
   m_Camera.Resize(spec.Width, spec.Height);
 
-  if(spec.Buffer == nullptr) {
+  if (spec.Buffer == nullptr) {
     spec.Buffer = new uint32_t[spec.Width * spec.Height];
   }
 

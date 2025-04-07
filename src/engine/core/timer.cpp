@@ -15,7 +15,7 @@ void Timer::Start() {
 }
 
 double Timer::End(std::string_view opName, bool output) {
-  if(m_StartTimepoint == TimePoint {}) return m_LastResult;
+  if (m_StartTimepoint == TimePoint{}) return m_LastResult;
 
   auto endTimepoint = std::chrono::high_resolution_clock::now();
 
@@ -33,8 +33,7 @@ double Timer::End(std::string_view opName, bool output) {
 
   m_LastResult = ms;
 
-  if(output)
-    std::cout << opName << " took " << ms << " ms\n";
+  if (output) std::cout << opName << " took " << ms << " ms\n";
 
   // reset
   m_StartTimepoint = TimePoint{};

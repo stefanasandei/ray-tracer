@@ -19,7 +19,7 @@ class UILayer {
 
  private:
   void RenderMenuBar() const;
-  static void RenderExportPopup() ;
+  static void RenderExportPopup();
 
  private:
   bool m_Open = true;

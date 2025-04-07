@@ -98,8 +98,7 @@ void UILayer::RenderMenuBar() const {
     ImGui::EndMainMenuBar();
   }
 
-  if(openExportImagePopup)
-    ImGui::OpenPopup("Export as image");
+  if (openExportImagePopup) ImGui::OpenPopup("Export as image");
 
   RenderExportPopup();
 }
@@ -108,13 +107,14 @@ void UILayer::RenderExportPopup() {
   static char directoryBuf[256] = "./";
   static char filenameBuf[256] = "output.png";
 
-  if (ImGui::BeginPopupModal("Export as image", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-
+  if (ImGui::BeginPopupModal("Export as image", nullptr,
+                             ImGuiWindowFlags_AlwaysAutoResize)) {
     // Open file dialog to choose directory
     if (ImGui::Button("Choose Output Directory")) {
       IGFD::FileDialogConfig config;
       config.path = ".";
-      ImGuiFileDialog::Instance()->OpenDialog("ChooseDirDlgKey", "Choose Directory", nullptr, config);
+      ImGuiFileDialog::Instance()->OpenDialog(
+          "ChooseDirDlgKey", "Choose Directory", nullptr, config);
     }
 
     // Handle directory dialog result
@@ -143,7 +143,8 @@ void UILayer::RenderExportPopup() {
 
     if (ImGui::Button("Export")) {
       GlobalEventFlags.ExportToImage = true;
-      GlobalPanelState.ExportFilepath = std::string(directoryBuf) + "/" + std::string(filenameBuf);
+      GlobalPanelState.ExportFilepath =
+          std::string(directoryBuf) + "/" + std::string(filenameBuf);
       ImGui::CloseCurrentPopup();
     }
 

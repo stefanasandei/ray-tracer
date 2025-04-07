@@ -4,9 +4,9 @@
 
 #include "core/application.hpp"
 
+#include "panels/scene_panel.hpp"
 #include "panels/settings_panel.hpp"
 #include "panels/viewport_panel.hpp"
-#include "panels/scene_panel.hpp"
 
 namespace Viewer {
 
@@ -33,9 +33,7 @@ int32_t Application::Run() noexcept {
     m_GfxContext->RenderFrame();
 
     m_UILayer->BeginUI();
-    {
-      ShowUI();
-    }
+    { ShowUI(); }
     m_UILayer->EndUI();
   }
 

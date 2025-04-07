@@ -11,7 +11,7 @@ namespace PT {
 
 class Random {
  public:
-  static void Init() { }
+  static void Init() {}
 
   static uint32_t UInt() {
     // PCG Hash
@@ -28,8 +28,7 @@ class Random {
   }
 
   static float Float() {
-    return (float)UInt() /
-           (float)std::numeric_limits<uint32_t>::max();
+    return (float)UInt() / (float)std::numeric_limits<uint32_t>::max();
   }
 
   static glm::vec3 Vec3() { return {Float(), Float(), Float()}; }
