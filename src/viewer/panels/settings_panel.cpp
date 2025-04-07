@@ -11,8 +11,9 @@ void CategorySeparator() { ImGui::Text(""); }
 constexpr const char* MATERIAL_TYPES[] = { "Lambertian", "Metal" };
 
 std::string GetMaterialType(const std::shared_ptr<PT::Material>& material) {
-  if (std::dynamic_pointer_cast<PT::Lambertian>(material)) return "Lambertian";
-  if (std::dynamic_pointer_cast<PT::Metal>(material)) return "Metal";
+  auto a = typeid(*material).name();
+  if (auto _ = std::dynamic_pointer_cast<PT::Lambertian>(material)) return "Lambertian";
+  if (auto _ = std::dynamic_pointer_cast<PT::Metal>(material)) return "Metal";
   return "Unknown";
 }
 
@@ -90,7 +91,7 @@ void SettingsPanel::RenderCameraSettings() {
 
 void SettingsPanel::RenderEntityMaterialSettings(PT::Primitive& primitive) {
   auto material = primitive.GetMaterial();
-  static std::string selectedType = GetMaterialType(material);
+  std::string selectedType = GetMaterialType(material);
 
   ImGui::Text("Material");
 

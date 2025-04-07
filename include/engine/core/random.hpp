@@ -11,16 +11,24 @@ namespace PT {
 
 class Random {
  public:
-  static void Init() { s_RandomEngine.seed(std::random_device()()); }
+  static void Init() { }
 
-  static uint32_t UInt() { return s_Distribution(s_RandomEngine); }
+  static uint32_t UInt() {
+    // PCG Hash
+    // https://www.reedbeta.com/blog/hash-functions-for-gpu-rendering/#hash-or-prng
+
+    uint32_t state = RngState;
+    RngState = RngState * 747796405u + 2891336453u;
+    uint32_t word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+    return (word >> 22u) ^ word;
+  }
 
   static uint32_t UInt(uint32_t min, uint32_t max) {
-    return min + (s_Distribution(s_RandomEngine) % (max - min + 1));
+    return min + (UInt() % (max - min + 1));
   }
 
   static float Float() {
-    return (float)s_Distribution(s_RandomEngine) /
+    return (float)UInt() /
            (float)std::numeric_limits<uint32_t>::max();
   }
 
@@ -40,9 +48,7 @@ class Random {
   }
 
  private:
-  static std::mt19937 s_RandomEngine;
-  static std::uniform_int_distribution<std::mt19937::result_type>
-      s_Distribution;
+  static uint32_t RngState;
 };
 
 }  // namespace PT
