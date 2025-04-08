@@ -9,15 +9,11 @@
 #include "engine/camera.hpp"
 #include "engine/core/base.hpp"
 #include "engine/scene.hpp"
+#include "engine/backend/backend.h"
 
 namespace PT {
 
 // ------ Helper structures ------
-
-struct RenderCaptureSpecification {
-  uint32_t Width, Height;
-  uint32_t* Buffer;
-};
 
 enum RendererAPI { CPU, VULKAN };
 
@@ -25,8 +21,7 @@ enum RendererAPI { CPU, VULKAN };
 
 class Renderer {
  public:
-  Renderer();
-  Renderer(const RendererAPI& api);
+  explicit Renderer(RendererAPI api = RendererAPI::CPU);
   ~Renderer();
 
   void SetGeometry(const Scene& scene);
@@ -42,18 +37,11 @@ class Renderer {
                           const std::string& filename);
 
  private:
-  [[nodiscard]] glm::vec3 PerPixel(uint32_t x, uint32_t y) const noexcept;
-  [[nodiscard]] glm::vec3 TraceRay(const Ray& ray,
-                                   uint32_t depth = 10) const noexcept;
-
- private:
   RendererAPI m_API;
+  std::shared_ptr<Backend> m_Backend;
+
   Camera m_Camera;
   Scene m_ScenePrimitive;
 };
-
-// ------ Utility function ------
-
-static uint32_t ConvertToRGBA(const glm::vec4& color);
 
 }  // namespace PT

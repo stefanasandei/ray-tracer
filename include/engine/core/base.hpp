@@ -28,3 +28,17 @@
 #define ASSERT(x)
 
 #endif
+
+namespace PT {
+
+static inline uint32_t ConvertToRGBA(const glm::vec4& color) {
+  auto r = (uint8_t)(color.r * 255.0f);
+  auto g = (uint8_t)(color.g * 255.0f);
+  auto b = (uint8_t)(color.b * 255.0f);
+  auto a = (uint8_t)(color.a * 255.0f);
+
+  uint32_t result = (a << 24) | (b << 16) | (g << 8) | r;
+  return result;
+}
+
+}
