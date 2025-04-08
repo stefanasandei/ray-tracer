@@ -20,7 +20,7 @@
 #endif
 
 #define ASSERT(x) \
-  if (!x) DEBUG_BREAK()
+  if (!(x)) DEBUG_BREAK()
 
 #else
 

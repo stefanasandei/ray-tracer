@@ -11,6 +11,7 @@
 #include <glm/glm.hpp>
 
 #include "engine/backend/backend.hpp"
+#include "engine/backend/vk/context.hpp"
 #include "engine/camera.hpp"
 #include "engine/core/base.hpp"
 #include "engine/scene.hpp"
@@ -26,6 +27,8 @@ class VulkanBackend : public virtual Backend {
   void RenderToBuffer(const RenderCaptureSpecification& spec) override;
 
  private:
+  VulkanContext m_Context;
+
   const Camera* m_Camera{};
   const Scene* m_ScenePrimitive{};
 };
