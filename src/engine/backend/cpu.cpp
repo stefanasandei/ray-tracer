@@ -42,8 +42,9 @@ glm::vec3 CPUBackend::PerPixel(uint32_t x, uint32_t y) const noexcept {
 
   for (uint32_t sample = 0; sample < m_Camera->GetSamplesPerPixel(); sample++) {
     auto origin = m_Camera->GetPosition();
-    auto direction = m_Camera->GetRayDirections()[x + y * m_Camera->GetWidth()] +
-                     Random::Vec3(-0.001f, 0.001f);
+    auto direction =
+        m_Camera->GetRayDirections()[x + y * m_Camera->GetWidth()] +
+        Random::Vec3(-0.001f, 0.001f);
 
     Ray ray(origin, direction);
     color += TraceRay(ray);
@@ -53,12 +54,12 @@ glm::vec3 CPUBackend::PerPixel(uint32_t x, uint32_t y) const noexcept {
 }
 
 glm::vec3 CPUBackend::TraceRay(const PT::Ray& ray,
-                             uint32_t depth) const noexcept {
+                               uint32_t depth) const noexcept {
   if (depth <= 0) return glm::vec3(0.0f);
 
   HitRecord rec{};
   if (m_ScenePrimitive->Hit(ray, 0.001, std::numeric_limits<float>::infinity(),
-                           rec)) {
+                            rec)) {
     Ray scattered(glm::vec3(0.0f), glm::vec3(0.0f));
     glm::vec3 attenuation(0.0f);
     if (rec.Mat->Scatter(ray, rec, attenuation, scattered))
@@ -72,4 +73,4 @@ glm::vec3 CPUBackend::TraceRay(const PT::Ray& ray,
          a * glm::vec3(0.5, 0.7, 1.0);
 }
 
-}
+}  // namespace PT

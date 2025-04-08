@@ -29,4 +29,4 @@ class Backend {
   virtual void RenderToBuffer(const RenderCaptureSpecification& spec) = 0;
 };
 
-}
+}  // namespace PT

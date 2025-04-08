@@ -6,10 +6,10 @@
 
 #include <glm/glm.hpp>
 
+#include "engine/backend/backend.hpp"
 #include "engine/camera.hpp"
 #include "engine/core/base.hpp"
 #include "engine/scene.hpp"
-#include "engine/backend/backend.h"
 
 namespace PT {
 
@@ -21,7 +21,7 @@ enum RendererAPI { CPU, VULKAN };
 
 class Renderer {
  public:
-  explicit Renderer(RendererAPI api = RendererAPI::CPU);
+  explicit Renderer(RendererAPI api = RendererAPI::VULKAN);
   ~Renderer();
 
   void SetGeometry(const Scene& scene);

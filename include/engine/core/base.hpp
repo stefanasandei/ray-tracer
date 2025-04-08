@@ -41,4 +41,4 @@ static inline uint32_t ConvertToRGBA(const glm::vec4& color) {
   return result;
 }
 
-}
+}  // namespace PT

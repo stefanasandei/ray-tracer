@@ -3,10 +3,12 @@
 //
 
 #include "engine/renderer.hpp"
-#include "engine/backend/cpu.hpp"
-#include "engine/ray.hpp"
 
 #include <stb_image_write.h>
+
+#include "engine/backend/cpu.hpp"
+#include "engine/backend/vulkan.hpp"
+#include "engine/ray.hpp"
 
 namespace PT {
 
@@ -23,6 +25,8 @@ Renderer::Renderer(RendererAPI api)
     case RendererAPI::CPU:
       m_Backend = std::make_shared<CPUBackend>();
       break;
+    case RendererAPI::VULKAN:
+      m_Backend = std::make_shared<VulkanBackend>();
     default:
       break;
   }
