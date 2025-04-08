@@ -24,7 +24,9 @@ mkdir build && cd build
 cmake ..
 ```
 
-Now open the project with Visual Studio, CLion or your editor of choice. Use the `cli` or `viewer` targets to get an executable. Output files will be in `./bin/`, alongside the renders (`./bin/sample.png` by default).
+Now open the project with Visual Studio, CLion or your editor of choice. Use the `cli` or `viewer` targets to get an executable. Output files will be in `./bin/`, alongside the renders (`./bin/sample.png` by default). 
+
+At the moment I am working on the Vulkan rendering backend, to change back to the fully working CPU backend modify the `./include/renderer.hpp` file.
 
 Relevant files are in `./src/cli/main.cpp` (library usage) and in `./include/engine/` + `./src/engine/`.
 
