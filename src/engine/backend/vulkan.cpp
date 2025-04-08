@@ -6,6 +6,8 @@
 
 #include <vulkan/vulkan.h>
 
+#include <optick.h>
+
 namespace PT {
 
 VulkanBackend::VulkanBackend() = default;
@@ -18,6 +20,8 @@ void VulkanBackend::UpdateRenderPayload(const RenderPayload& payload) {
 }
 
 void VulkanBackend::RenderToBuffer(const RenderCaptureSpecification& spec) {
+  OPTICK_EVENT("Vulkan RenderToBuffer");
+
   VkFormat format = VK_FORMAT_R8G8B8A8_UNORM;
 
   // 1. Create an image

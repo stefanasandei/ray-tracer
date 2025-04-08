@@ -1,5 +1,7 @@
 #include "panels/settings_panel.hpp"
 
+#include <optick.h>
+
 namespace Viewer {
 
 SettingsPanel::SettingsPanel() = default;
@@ -29,6 +31,10 @@ std::shared_ptr<PT::Material> CreateMaterial(const std::string& type) {
 }  // namespace
 
 void SettingsPanel::Render() {
+  // run viewer.exe with admin to get full details
+  OPTICK_FRAME("MainThread");
+  // optick frame here for some reason lol
+
   ImGui::Begin("Settings");
 
   ImGui::SeparatorText("Scene Settings");

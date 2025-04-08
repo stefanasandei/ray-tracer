@@ -43,3 +43,8 @@ target_link_libraries(ImGuiFileDialog PUBLIC imgui)
 target_include_directories(ImGuiFileDialog PUBLIC imgui)
 target_link_libraries(external INTERFACE ImGuiFileDialog)
 target_include_directories(external INTERFACE imguifiledialog)
+
+# optick
+add_subdirectory(optick)
+target_link_libraries(external INTERFACE OptickCore)
+target_include_directories(external INTERFACE optick/src)
