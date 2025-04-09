@@ -40,9 +40,10 @@ void SettingsPanel::Render() {
   ImGui::SeparatorText("Scene Settings");
 
   // add a toggle for rendering mode
-  const char* renderModeItems[] = { "Real-time", "Offline" };
+  const char* renderModeItems[] = {"Real-time", "Offline"};
   int currentMode = static_cast<int>(m_RenderMode);
-  if (ImGui::Combo("Mode", &currentMode, renderModeItems, IM_ARRAYSIZE(renderModeItems))) {
+  if (ImGui::Combo("Mode", &currentMode, renderModeItems,
+                   IM_ARRAYSIZE(renderModeItems))) {
     m_RenderMode = static_cast<RenderMode>(currentMode);
   }
 
@@ -55,7 +56,8 @@ void SettingsPanel::Render() {
       ImGui::Text("Time to render: %.2f ms", m_Timer.End("", false));
     }
   } else {
-    ImGui::Text("Time to render: %.2f ms; FPS: %.0f", m_Timer.End("", false), ImGui::GetIO().Framerate);
+    ImGui::Text("Time to render: %.2f ms; FPS: %.0f", m_Timer.End("", false),
+                ImGui::GetIO().Framerate);
     m_Timer.Start();
     GlobalEventFlags.RenderNow = true;
   }

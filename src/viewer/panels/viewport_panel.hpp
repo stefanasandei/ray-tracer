@@ -2,9 +2,10 @@
 // Created by Stefan on 7/21/2024.
 //
 
+#include <vector>
+
 #include "core/panel.hpp"
 #include "gfx/image.hpp"
-#include <vector>
 
 namespace Viewer {
 

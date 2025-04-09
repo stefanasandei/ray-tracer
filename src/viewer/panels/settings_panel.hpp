@@ -11,10 +11,7 @@
 
 namespace Viewer {
 
-enum class RenderMode {
-  RealTime,
-  Offline
-};
+enum class RenderMode { RealTime, Offline };
 
 class SettingsPanel : public Panel {
  public:

@@ -2,7 +2,8 @@
 // Created by Asandei Stefan on 21.07.2024.
 //
 
-#pragma message("Change the Renderer API from ./include/renderer.hpp. The CPU backend fully works, while the Vulkan backend is a work in progress.")
+#pragma message( \
+    "Change the Renderer API from ./include/renderer.hpp. The CPU backend fully works, while the Vulkan backend is a work in progress.")
 
 #include "engine/renderer.hpp"
 

@@ -27,10 +27,19 @@ class VulkanBackend : public virtual Backend {
   void RenderToBuffer(const RenderCaptureSpecification& spec) override;
 
  private:
+  void InitPerFrameResources(uint32_t width, uint32_t height);
+
+ private:
   VulkanContext m_Context;
+
+  VkImage m_Image = VK_NULL_HANDLE;
+  VkDeviceMemory m_ImageMemory = VK_NULL_HANDLE;
+  VkCommandBuffer m_Cmd = VK_NULL_HANDLE;
 
   const Camera* m_Camera{};
   const Scene* m_ScenePrimitive{};
+
+  uint32_t m_CurrentWidth{0}, m_CurrentHeight{0};
 };
 
 }  // namespace PT

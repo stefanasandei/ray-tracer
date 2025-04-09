@@ -7,9 +7,9 @@
 namespace Viewer {
 
 ViewportPanel::ViewportPanel() : m_RenderedScene(m_Width, m_Height) {
-  // we do this instead of allocating the exact width x height and resizing for changes
-  // to avoid memory reallocation
-  constexpr uint32_t MAX_WIDTH = 3840, MAX_HEIGHT = 2160; // 4k res
+  // we do this instead of allocating the exact width x height and resizing for
+  // changes to avoid memory reallocation
+  constexpr uint32_t MAX_WIDTH = 3840, MAX_HEIGHT = 2160;  // 4k res
   m_ImageData.resize(MAX_WIDTH * MAX_HEIGHT);
 
   m_PrevWidth = m_Width;

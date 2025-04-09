@@ -31,4 +31,4 @@ class DeletionQueue {
   std::deque<std::function<void()>> m_Deletors;
 };
 
-}
+}  // namespace PT

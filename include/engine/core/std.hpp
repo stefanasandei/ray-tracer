@@ -5,9 +5,9 @@
 #include <array>
 #include <chrono>
 #include <cstdint>
+#include <deque>
 #include <iostream>
 #include <memory>
+#include <print>
 #include <string>
 #include <vector>
-#include <deque>
-#include <print>

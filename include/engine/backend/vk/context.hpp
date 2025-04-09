@@ -4,11 +4,11 @@
 
 #pragma once
 
+#include <vulkan/vk_enum_string_helper.h>
+#include <vulkan/vulkan.h>
+
 #include "engine/core/base.hpp"
 #include "engine/core/deletion_queue.hpp"
-
-#include <vulkan/vulkan.h>
-#include <vulkan/vk_enum_string_helper.h>
 
 namespace PT {
 
@@ -17,7 +17,13 @@ class VulkanContext {
   VulkanContext();
   ~VulkanContext();
 
-  [[nodiscard]] uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) const;
+  [[nodiscard]] uint32_t FindMemoryType(uint32_t typeFilter,
+                                        VkMemoryPropertyFlags properties) const;
+  [[nodiscard]] static VkImageSubresourceRange ImageSubresourceRange(
+      VkImageAspectFlags aspectMask);
+  static void TransitionImage(VkCommandBuffer cmd, VkImage image,
+                              VkImageLayout currentLayout,
+                              VkImageLayout newLayout);
 
   [[nodiscard]] VkDevice Device() const { return m_Device; }
   [[nodiscard]] VkQueue GraphicsQueue() const { return m_GraphicsQueue; }
@@ -42,13 +48,13 @@ class VulkanContext {
   DeletionQueue m_DeletionQueue;
 };
 
-}
+}  // namespace PT
 
-#define VK_CHECK(x)                                                     \
-    do {                                                                \
-        VkResult err = x;                                               \
-        if (err) {                                                      \
-             std::print("Detected Vulkan error: {}\n", string_VkResult(err)); \
-            abort();                                                    \
-        }                                                               \
-    } while (0)
+#define VK_CHECK(x)                                                    \
+  do {                                                                 \
+    VkResult err = x;                                                  \
+    if (err) {                                                         \
+      std::print("Detected Vulkan error: {}\n", string_VkResult(err)); \
+      abort();                                                         \
+    }                                                                  \
+  } while (0)
