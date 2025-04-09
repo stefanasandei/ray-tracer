@@ -34,7 +34,8 @@ void VulkanBackend::InitPerFrameResources(uint32_t width, uint32_t height) {
                                  .samples = VK_SAMPLE_COUNT_1_BIT,
                                  .tiling = VK_IMAGE_TILING_LINEAR,
                                  .usage = VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
-                                          VK_IMAGE_USAGE_TRANSFER_DST_BIT,
+                                          VK_IMAGE_USAGE_TRANSFER_DST_BIT |
+                                          VK_IMAGE_USAGE_HOST_TRANSFER_BIT,
                                  .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED};
 
   VK_CHECK(vkCreateImage(m_Context.Device(), &imageInfo, nullptr, &m_Image));
@@ -122,17 +123,49 @@ void VulkanBackend::RenderToBuffer(const RenderCaptureSpecification& spec) {
   VK_CHECK(vkQueueWaitIdle(m_Context.GraphicsQueue()));
 
   // 6. Map and copy
-  void* data;
-  VK_CHECK(vkMapMemory(m_Context.Device(), m_ImageMemory, 0, VK_WHOLE_SIZE, 0,
-                       &data));
+  CopyImageToCPU(spec.Buffer, spec.Width, spec.Height);
+}
 
-  size_t rowPitch = spec.Width * 4;
-  for (uint32_t y = 0; y < spec.Height; y++) {
-    std::memcpy(spec.Buffer + y * spec.Width,
-                static_cast<char*>(data) + y * rowPitch, rowPitch);
-  }
+void VulkanBackend::CopyImageToCPU(uint32_t* buffer, uint32_t width, uint32_t height) {
+  OPTICK_EVENT("CopyImageToCPU");
+
+#if 0
+  void* data;
+  VK_CHECK(vkMapMemory(m_Context.Device(), m_ImageMemory, 0, VK_WHOLE_SIZE, 0, &data));
+
+  size_t totalSize = width * height * 4;
+  std::memcpy(buffer, data, totalSize);
 
   vkUnmapMemory(m_Context.Device(), m_ImageMemory);
+#else
+  // new Vulkan 1.4 feature: copy image directly to host memory, it's about ~10% slower :(
+
+  VkImageToMemoryCopy imageToMemoryCopy = {
+      .sType = VK_STRUCTURE_TYPE_IMAGE_TO_MEMORY_COPY,
+      .pHostPointer = buffer,
+      .imageSubresource = {
+          .aspectMask = VK_IMAGE_ASPECT_COLOR_BIT,
+          .mipLevel = 0,
+          .baseArrayLayer = 0,
+          .layerCount = 1,
+      },
+      .imageExtent = {
+          .width = width,
+          .height = height,
+          .depth = 1
+      },
+  };
+
+  VkCopyImageToMemoryInfo copyImageInfo = {
+      .sType = VK_STRUCTURE_TYPE_COPY_IMAGE_TO_MEMORY_INFO,
+      .srcImage = m_Image,
+      .srcImageLayout = VK_IMAGE_LAYOUT_GENERAL,
+      .regionCount = 1,
+      .pRegions = &imageToMemoryCopy
+  };
+
+  VK_CHECK(vkCopyImageToMemory(m_Context.Device(), &copyImageInfo));
+#endif
 }
 
 }  // namespace PT

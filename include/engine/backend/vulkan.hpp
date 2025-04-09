@@ -28,6 +28,7 @@ class VulkanBackend : public virtual Backend {
 
  private:
   void InitPerFrameResources(uint32_t width, uint32_t height);
+  void CopyImageToCPU(uint32_t* buffer, uint32_t width, uint32_t height);
 
  private:
   VulkanContext m_Context;
