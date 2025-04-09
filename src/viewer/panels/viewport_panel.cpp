@@ -7,7 +7,10 @@
 namespace Viewer {
 
 ViewportPanel::ViewportPanel() : m_RenderedScene(m_Width, m_Height) {
-  m_ImageData = new uint32_t[m_Width * m_Height];
+  // we do this instead of allocating the exact width x height and resizing for changes
+  // to avoid memory reallocation
+  constexpr uint32_t MAX_WIDTH = 3840, MAX_HEIGHT = 2160; // 4k res
+  m_ImageData.resize(MAX_WIDTH * MAX_HEIGHT);
 
   m_PrevWidth = m_Width;
   m_PrevHeight = m_Height;
@@ -15,8 +18,6 @@ ViewportPanel::ViewportPanel() : m_RenderedScene(m_Width, m_Height) {
   GlobalPanelState.SamplesPerPixel =
       m_Renderer.GetCamera().GetSamplesPerPixel();
 }
-
-ViewportPanel::~ViewportPanel() { delete[] m_ImageData; }
 
 void ViewportPanel::Render() {
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
@@ -65,7 +66,7 @@ void ViewportPanel::HandlePanelEvents() {
             static_cast<uint32_t>(m_Width / GlobalPanelState.DownsampleFactor),
         .Height =
             static_cast<uint32_t>(m_Height / GlobalPanelState.DownsampleFactor),
-        .Buffer = m_ImageData};
+        .Buffer = m_ImageData.data()};
 
     PT::Renderer::SaveCapture(captureSpec, GlobalPanelState.ExportFilepath);
 
@@ -83,7 +84,7 @@ void ViewportPanel::RenderScene() {
           static_cast<uint32_t>(m_Width / GlobalPanelState.DownsampleFactor),
       .Height =
           static_cast<uint32_t>(m_Height / GlobalPanelState.DownsampleFactor),
-      .Buffer = m_ImageData};
+      .Buffer = m_ImageData.data()};
 
   // writes the rendered image data to m_ImageData
   m_Renderer.Capture(captureSpec);
@@ -91,16 +92,10 @@ void ViewportPanel::RenderScene() {
   // updates the opengl texture data
   m_RenderedScene.Resize(m_Width / GlobalPanelState.DownsampleFactor,
                          m_Height / GlobalPanelState.DownsampleFactor);
-  m_RenderedScene.SetData(m_ImageData);
+  m_RenderedScene.SetData(m_ImageData.data());
 }
 
 void ViewportPanel::ResizeScene() {
-  if (m_PrevWidth * m_PrevHeight < m_Width * m_Height) {
-    delete[] m_ImageData;
-
-    m_ImageData = new uint32_t[m_Width * m_Height];
-  }
-
   if (m_PrevWidth * m_PrevHeight == 0) {
     // initial render
     RenderScene();
@@ -109,7 +104,7 @@ void ViewportPanel::ResizeScene() {
   // update the image buffer
   m_RenderedScene.Resize(m_Width / GlobalPanelState.DownsampleFactor,
                          m_Height / GlobalPanelState.DownsampleFactor);
-  m_RenderedScene.SetData(m_ImageData);
+  m_RenderedScene.SetData(m_ImageData.data());
 
   m_PrevWidth = m_Width;
   m_PrevHeight = m_Height;

@@ -19,6 +19,7 @@ void VulkanBackend::UpdateRenderPayload(const RenderPayload& payload) {
   m_ScenePrimitive = &payload.Scene;
 }
 
+float a = 0.0f, d = 0.01f;
 void VulkanBackend::RenderToBuffer(const RenderCaptureSpecification& spec) {
   OPTICK_EVENT("Vulkan RenderToBuffer");
 
@@ -105,7 +106,9 @@ void VulkanBackend::RenderToBuffer(const RenderCaptureSpecification& spec) {
   );
 
   // 5. Clear the image
-  VkClearColorValue clearColor = {0.0f, 0.0f, 1.0f, 1.0f}; // blue
+  a += d; // just to debug if realtime works
+  if(a < 0.0f || a > 1.0f) d = -d;
+  VkClearColorValue clearColor = {0.0f, 0.0f, a, 1.0f}; // blue
 
   VkImageSubresourceRange clearRange{
       .aspectMask = VK_IMAGE_ASPECT_COLOR_BIT,

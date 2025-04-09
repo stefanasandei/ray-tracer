@@ -22,6 +22,7 @@ Window::Window(const WindowSpecification &spec) {
   }
 
   glfwMakeContextCurrent(m_Window);
+  glfwSwapInterval(0);
 }
 
 Window::~Window() { glfwTerminate(); }

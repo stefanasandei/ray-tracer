@@ -4,7 +4,7 @@
 
 namespace Viewer {
 
-SettingsPanel::SettingsPanel() = default;
+SettingsPanel::SettingsPanel() : m_RenderMode(RenderMode::RealTime) {}
 SettingsPanel::~SettingsPanel() = default;
 
 namespace {
@@ -39,18 +39,33 @@ void SettingsPanel::Render() {
 
   ImGui::SeparatorText("Scene Settings");
 
-  if (ImGui::Button("Render")) {
-    GlobalEventFlags.RenderNow = true;
-    m_Timer.Start();
-  } else {
-    ImGui::SameLine();
-    ImGui::Text("Time to render: %.2f ms", m_Timer.End("", false));
+  // add a toggle for rendering mode
+  const char* renderModeItems[] = { "Real-time", "Offline" };
+  int currentMode = static_cast<int>(m_RenderMode);
+  if (ImGui::Combo("Mode", &currentMode, renderModeItems, IM_ARRAYSIZE(renderModeItems))) {
+    m_RenderMode = static_cast<RenderMode>(currentMode);
   }
 
+  if (m_RenderMode == RenderMode::Offline) {
+    if (ImGui::Button("Render")) {
+      GlobalEventFlags.RenderNow = true;
+      m_Timer.Start();
+    } else {
+      ImGui::SameLine();
+      ImGui::Text("Time to render: %.2f ms", m_Timer.End("", false));
+    }
+  } else {
+    ImGui::Text("Time to render: %.2f ms; FPS: %.0f", m_Timer.End("", false), ImGui::GetIO().Framerate);
+    m_Timer.Start();
+    GlobalEventFlags.RenderNow = true;
+  }
+
+  // now for the actual settings
   CategorySeparator();
   RenderCameraSettings();
   CategorySeparator();
 
+  // edit the selected entity
   const uint32_t activeIdx = GlobalPanelState.ActivePrimitiveIdx;
   if (activeIdx > 0) {
     auto& primitive = GlobalPanelState.Scene.GetPrimitives()[activeIdx - 1];

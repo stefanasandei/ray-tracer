@@ -4,13 +4,14 @@
 
 #include "core/panel.hpp"
 #include "gfx/image.hpp"
+#include <vector>
 
 namespace Viewer {
 
 class ViewportPanel : public Panel {
  public:
   ViewportPanel();
-  ~ViewportPanel();
+  ~ViewportPanel() = default;
 
   void Render() override;
 
@@ -23,9 +24,9 @@ class ViewportPanel : public Panel {
   PT::Renderer m_Renderer;
 
   int32_t m_Width = 0, m_Height = 0;
-  int32_t m_PrevWidth, m_PrevHeight;
+  int32_t m_PrevWidth = 0, m_PrevHeight = 0;
 
-  uint32_t* m_ImageData = nullptr;
+  std::vector<uint32_t> m_ImageData;
   Image m_RenderedScene;
 };
 
